@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="grey">#8C8173</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="dark_chocolate">#3E2723</color>
+    <color name="deep_brown">#5D4037</color>
+    <color name="muted_brown">#9E7B62</color>
+    <color name="brown">#795548</color>
+    <color name="orange">#71270D</color>
+    <color name="beige">#CAA6A6</color>
+    <color name="very_light_beige">#d4beb6</color>
+    <color name="green">#2E8B57</color>
+    <color name="red">#800000</color>
+</resources>

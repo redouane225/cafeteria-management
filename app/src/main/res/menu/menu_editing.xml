@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/edit"
+        android:title="Modifier"
+        android:icon="@drawable/update_icon"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/delete"
+        android:title="Supprimer"
+        android:icon="@drawable/remove_icon"
+        app:showAsAction="never" />
+</menu>
