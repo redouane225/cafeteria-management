@@ -48,7 +48,10 @@
     <string name="inventory_items">display inventory items</string>
     <string name="bakery">display bakery items of menu</string>
     <string name="baverages">display baverages of menu</string>
-
+    <string-array name="availability_options">
+        <item>Available</item>
+        <item>Unavailable</item>
+    </string-array>
 
 
 </resources>

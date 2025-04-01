@@ -76,7 +76,8 @@
         android:id="@+id/availability"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:entries="@array/availability_options" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSave"
