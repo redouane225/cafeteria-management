@@ -15,15 +15,27 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.cafeteriamanagement.R;
+import com.example.cafeteriamanagement.model.Menu_item;
 
 import java.util.ArrayList;
 
 public class MenuDetailsFragment extends Fragment {
 
+    private static final String ARG_MENU_ITEM = "menu_item";
+
     private EditText itemNameEditText;
     private EditText priceEditText;
     private Spinner availabilitySpinner;
     private Button saveButton;
+    private Menu_item menuItem;
+
+    public static MenuDetailsFragment newInstance(@Nullable Menu_item menuItem) {
+        MenuDetailsFragment fragment = new MenuDetailsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_MENU_ITEM, menuItem);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -48,6 +60,16 @@ public class MenuDetailsFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         availabilitySpinner.setAdapter(adapter);
 
+        // Retrieve menu item from arguments
+        if (getArguments() != null) {
+            menuItem = getArguments().getParcelable(ARG_MENU_ITEM);
+            if (menuItem != null) {
+                itemNameEditText.setText(menuItem.getName());
+                priceEditText.setText(menuItem.getPrice());
+                availabilitySpinner.setSelection(availability.indexOf(menuItem.getIsAvailable()));
+            }
+        }
+
         // Set click listener for save button
         saveButton.setOnClickListener(v -> saveMenuItem());
 
@@ -64,12 +86,22 @@ public class MenuDetailsFragment extends Fragment {
             return;
         }
 
-        // Save menu item (Implement your database logic here)
-        Toast.makeText(requireContext(), "Menu item saved successfully", Toast.LENGTH_SHORT).show();
+        if (menuItem == null) {
+            menuItem = new Menu_item(id,itemName, price, availability);
+        } else {
+            menuItem.setId(id);
+            menuItem.setName(itemName);
+            menuItem.setPrice(price);
+            menuItem.setIsAvailable(availability);
+        }
 
-        // Optionally, clear the form
-        itemNameEditText.setText("");
-        priceEditText.setText("");
-        availabilitySpinner.setSelection(0);
+        // Notify MenuFragment to update the menu list
+        Fragment targetFragment = getTargetFragment();
+        if (targetFragment instanceof MenuFragment) {
+            ((MenuFragment) targetFragment).updateMenuItemList(menuItem);
+        }
+
+        // Close the fragment
+        requireActivity().getSupportFragmentManager().popBackStack();
     }
 }

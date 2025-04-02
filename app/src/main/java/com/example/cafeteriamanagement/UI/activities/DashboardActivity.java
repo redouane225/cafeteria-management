@@ -10,12 +10,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cafeteriamanagement.R;
 import com.example.cafeteriamanagement.UI.fragments.InventoryDetails;
-import com.example.cafeteriamanagement.UI.fragments.InventoryDetails;
 import com.example.cafeteriamanagement.UI.fragments.InventoryFragment;
 import com.example.cafeteriamanagement.UI.fragments.MenuDetailsFragment;
 import com.example.cafeteriamanagement.UI.fragments.MenuFragment;
 import com.example.cafeteriamanagement.UI.fragments.ProfileFragment;
-import com.example.cafeteriamanagement.UI.fragments.StaffdetailFragment;
 import com.example.cafeteriamanagement.UI.fragments.StaffdetailFragment;
 import com.example.cafeteriamanagement.UI.fragments.StafflistFragment;
 import com.example.cafeteriamanagement.databinding.ActivityDashboardBinding;
@@ -57,7 +55,7 @@ public class DashboardActivity extends AppCompatActivity {
             if (itemId == R.id.menu_dashboard) {
                 switchFragment(menuFragment);
                 return true;
-            } else if ( itemId == R.id.menu_staff) {
+            } else if (itemId == R.id.menu_staff) {
                 switchFragment(staffFragment);
                 return true;
             } else if (itemId == R.id.menu_inventory) {

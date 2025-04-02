@@ -4,14 +4,12 @@ public class Menu_item {
     private int id;
     private String name;
     private double price;
-    private String imageUrl;
-    private boolean isAvailable;
+    private String isAvailable;
 
-    public Menu_item(int id, String name, double price, String imageUrl, boolean available) {
+    public Menu_item(int id, String name, double price, String available) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.imageUrl = imageUrl;
         this.isAvailable = available;
     }
 
@@ -39,19 +37,11 @@ public class Menu_item {
         this.price = price;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public boolean isAvailable() {
+    public String getIsAvailable() {
         return isAvailable;
     }
 
-    public void setAvailable(boolean available) {
-        this.isAvailable = available;
+    public void setIsAvailable(String isAvailable) {
+        this.isAvailable = isAvailable;
     }
 }
