@@ -35,7 +35,7 @@ public class MenuDetailsFragment extends Fragment {
         // Initialize views
         itemNameEditText = view.findViewById(R.id.etitemname);
         priceEditText = view.findViewById(R.id.editemprice);
-        availabilitySpinner = view.findViewById(R.id.availability);
+        availabilitySpinner = view.findViewById(R.id.menu_availability);
         saveButton = view.findViewById(R.id.btnSave);
 
         // Create and set up the spinner adapter

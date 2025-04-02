@@ -73,7 +73,7 @@
 
 
     <Spinner
-        android:id="@+id/availability"
+        android:id="@+id/menu_availability"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:padding="8dp"

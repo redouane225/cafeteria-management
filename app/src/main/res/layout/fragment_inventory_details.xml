@@ -32,7 +32,7 @@
         android:textColor="@color/black"/>
 
     <EditText
-        android:id="@+id/etitemname"
+        android:id="@+id/invName"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="item name"
@@ -52,7 +52,7 @@
         android:layout_marginTop="20dp"/>
 
     <EditText
-        android:id="@+id/editemprice"
+        android:id="@+id/invSupplier"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="supplier name"

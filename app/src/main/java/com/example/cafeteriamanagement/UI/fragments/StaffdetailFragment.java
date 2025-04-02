@@ -1,66 +1,75 @@
 package com.example.cafeteriamanagement.UI.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.cafeteriamanagement.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link StaffdetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class StaffdetailFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private EditText staffNameEditText;
+    private EditText staffRoleEditText;
+    private Spinner availabilitySpinner;
+    private Button saveButton;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public StaffdetailFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StaffdetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static StaffdetailFragment newInstance(String param1, String param2) {
-        StaffdetailFragment fragment = new StaffdetailFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_staffdetail, container, false);
+
+        // Initialize views
+        staffNameEditText = view.findViewById(R.id.stfName);
+        staffRoleEditText = view.findViewById(R.id.stfRole);
+        availabilitySpinner = view.findViewById(R.id.stf_status);
+        saveButton = view.findViewById(R.id.btnSave);
+
+        // Create and set up the spinner adapter
+        ArrayList<String> availability = new ArrayList<>();
+        availability.add("Full-time");
+        availability.add("Part-time");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_spinner_item, availability);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        availabilitySpinner.setAdapter(adapter);
+
+        // Set click listener for save button
+        saveButton.setOnClickListener(v -> saveStaffDetails());
+
+        return view;
+    }
+
+    private void saveStaffDetails() {
+        String staffName = staffNameEditText.getText().toString().trim();
+        String staffRole = staffRoleEditText.getText().toString().trim();
+        String availability = availabilitySpinner.getSelectedItem().toString();
+
+        if (staffName.isEmpty() || staffRole.isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
         }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_staffdetail, container, false);
+        // Save staff details (Implement your database logic here)
+        Toast.makeText(requireContext(), "Staff details saved successfully", Toast.LENGTH_SHORT).show();
+
+        // Optionally, clear the form
+        staffNameEditText.setText("");
+        staffRoleEditText.setText("");
+        availabilitySpinner.setSelection(0);
     }
 }

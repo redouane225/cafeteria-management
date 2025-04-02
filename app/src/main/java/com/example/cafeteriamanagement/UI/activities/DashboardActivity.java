@@ -1,6 +1,7 @@
 package com.example.cafeteriamanagement.UI.activities;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -8,9 +9,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cafeteriamanagement.R;
+import com.example.cafeteriamanagement.UI.fragments.InventoryDetails;
+import com.example.cafeteriamanagement.UI.fragments.InventoryDetails;
 import com.example.cafeteriamanagement.UI.fragments.InventoryFragment;
+import com.example.cafeteriamanagement.UI.fragments.MenuDetailsFragment;
 import com.example.cafeteriamanagement.UI.fragments.MenuFragment;
 import com.example.cafeteriamanagement.UI.fragments.ProfileFragment;
+import com.example.cafeteriamanagement.UI.fragments.StaffdetailFragment;
+import com.example.cafeteriamanagement.UI.fragments.StaffdetailFragment;
 import com.example.cafeteriamanagement.UI.fragments.StafflistFragment;
 import com.example.cafeteriamanagement.databinding.ActivityDashboardBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -51,7 +57,7 @@ public class DashboardActivity extends AppCompatActivity {
             if (itemId == R.id.menu_dashboard) {
                 switchFragment(menuFragment);
                 return true;
-            } else if (itemId == R.id.menu_staff) {
+            } else if ( itemId == R.id.menu_staff) {
                 switchFragment(staffFragment);
                 return true;
             } else if (itemId == R.id.menu_inventory) {
@@ -67,7 +73,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Set up Floating Action Button (FAB) to add new items
         FloatingActionButton fab = binding.fab;
-        fab.setOnClickListener(view -> showAddItemOptions());
+        fab.setOnClickListener(view -> showAddItemFragment());
     }
 
     private void switchFragment(Fragment targetFragment) {
@@ -78,10 +84,30 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    private void showAddItemOptions() {
-        // Show options to add new menu, staff, or inventory item
-        // This can be a dialog or a new activity/fragment
-        // For simplicity, let's assume we start a new activity
+    private void showAddItemFragment() {
+        // Navigate to the appropriate "Add New Item" fragment based on the current fragment
+        Fragment addItemFragment = null;
+        String tag = null;
 
+        if (activeFragment instanceof MenuFragment) {
+            addItemFragment = new MenuDetailsFragment();
+            tag = "MenuDetails";
+        } else if (activeFragment instanceof StafflistFragment) {
+            addItemFragment = new StaffdetailFragment();
+            tag = "StaffDetails";
+        } else if (activeFragment instanceof InventoryFragment) {
+            addItemFragment = new InventoryDetails();
+            tag = "InventoryDetails";
+        } else {
+            Toast.makeText(this, "Invalid Action", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (addItemFragment != null) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.fragment_container, addItemFragment, tag);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
     }
 }

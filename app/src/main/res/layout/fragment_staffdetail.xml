@@ -32,7 +32,7 @@
         android:textColor="@color/black"/>
 
     <EditText
-        android:id="@+id/etitemname"
+        android:id="@+id/stfName"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="staff name"
@@ -52,7 +52,7 @@
         android:layout_marginTop="20dp"/>
 
     <EditText
-        android:id="@+id/editemprice"
+        android:id="@+id/stfRole"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="waiter"
@@ -72,12 +72,11 @@
         android:layout_marginTop="20dp"/>
 
     <Spinner
-        android:id="@+id/availability"
+        android:id="@+id/stf_status"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:popupBackground="@color/very_light_beige"
+        android:layout_height="50dp"
         android:padding="8dp"
-        android:layout_marginTop="12dp"/>
+        android:entries="@array/status_options" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSave"

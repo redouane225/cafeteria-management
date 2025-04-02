@@ -21,8 +21,7 @@ import java.util.List;
 
 public class MenuFragment extends Fragment {
     private RecyclerView recyclerView;
-    private MenuAdapter adapter;
-    private List<Menu_item> menuItems;
+
 
     @Nullable
     @Override
