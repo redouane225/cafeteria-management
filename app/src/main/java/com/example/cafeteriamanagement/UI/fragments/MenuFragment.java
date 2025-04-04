@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cafeteriamanagement.R;
 import com.example.cafeteriamanagement.Adapter.MenuAdapter;
-import com.example.cafeteriamanagement.model.Menu_item;
+import com.example.cafeteriamanagement.model.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemClickLis
 
     private RecyclerView recyclerView;
     private MenuAdapter menuAdapter;
-    private List<Menu_item> menuItemList;
+    private List<MenuItem> menuItemList;
 
     @Nullable
     @Override
@@ -39,8 +39,8 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemClickLis
         // Initialize menu item list
         menuItemList = new ArrayList<>();
         // Add some sample data (in a real scenario, fetch from database)
-        menuItemList.add(new Menu_item(1,"Pizza", 10.99, "Available"));
-        menuItemList.add(new Menu_item(2,"Burger", 5.99, "Available"));
+        menuItemList.add(new MenuItem(1,"Pizza", 10.99, "Available"));
+        menuItemList.add(new MenuItem(2,"Burger", 5.99, "Available"));
 
         // Initialize adapter
         menuAdapter = new MenuAdapter(menuItemList, this);
@@ -50,11 +50,11 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemClickLis
     }
 
     @Override
-    public void onItemClick(Menu_item menuItem) {
+    public void onItemClick(MenuItem menuItem) {
         openMenuDetailsFragment(menuItem);
     }
 
-    private void openMenuDetailsFragment(@Nullable Menu_item menuItem) {
+    private void openMenuDetailsFragment(@Nullable MenuItem menuItem) {
         MenuDetailsFragment menuDetailsFragment = MenuDetailsFragment.newInstance(menuItem);
         menuDetailsFragment.setTargetFragment(this, 0);
         getParentFragmentManager().beginTransaction()
@@ -63,7 +63,7 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemClickLis
                 .commit();
     }
 
-    public void updateMenuItemList(Menu_item menuItem) {
+    public void updateMenuItemList(MenuItem menuItem) {
         if (menuItem != null) {
             // Update existing item or add new item
             int index = menuItemList.indexOf(menuItem);

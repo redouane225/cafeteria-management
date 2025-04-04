@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.cafeteriamanagement.R;
-import com.example.cafeteriamanagement.model.Menu_item;
+import com.example.cafeteriamanagement.model.MenuItem;
 
 import java.util.ArrayList;
 
@@ -27,9 +27,9 @@ public class MenuDetailsFragment extends Fragment {
     private EditText priceEditText;
     private Spinner availabilitySpinner;
     private Button saveButton;
-    private Menu_item menuItem;
+    private MenuItem menuItem;
 
-    public static MenuDetailsFragment newInstance(@Nullable Menu_item menuItem) {
+    public static MenuDetailsFragment newInstance(@Nullable MenuItem menuItem) {
         MenuDetailsFragment fragment = new MenuDetailsFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_MENU_ITEM, menuItem);
@@ -65,7 +65,7 @@ public class MenuDetailsFragment extends Fragment {
             menuItem = getArguments().getParcelable(ARG_MENU_ITEM);
             if (menuItem != null) {
                 itemNameEditText.setText(menuItem.getName());
-                priceEditText.setText(menuItem.getPrice());
+                priceEditText.setText(String.valueOf(menuItem.getPrice()));
                 availabilitySpinner.setSelection(availability.indexOf(menuItem.getIsAvailable()));
             }
         }
@@ -79,6 +79,14 @@ public class MenuDetailsFragment extends Fragment {
     private void saveMenuItem() {
         String itemName = itemNameEditText.getText().toString().trim();
         String price = priceEditText.getText().toString().trim();
+        double itemPrice;
+
+        try {
+            itemPrice = Double.parseDouble(price);
+        } catch (NumberFormatException e) {
+            Toast.makeText(requireContext(), "Invalid price format", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String availability = availabilitySpinner.getSelectedItem().toString();
 
         if (itemName.isEmpty() || price.isEmpty()) {
@@ -87,11 +95,10 @@ public class MenuDetailsFragment extends Fragment {
         }
 
         if (menuItem == null) {
-            menuItem = new Menu_item(id,itemName, price, availability);
+            menuItem = new MenuItem(0,itemName, itemPrice, availability);
         } else {
-            menuItem.setId(id);
             menuItem.setName(itemName);
-            menuItem.setPrice(price);
+            menuItem.setPrice(itemPrice);
             menuItem.setIsAvailable(availability);
         }
 

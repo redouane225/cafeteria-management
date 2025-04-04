@@ -9,20 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cafeteriamanagement.R;
-import com.example.cafeteriamanagement.model.Menu_item;
+import com.example.cafeteriamanagement.model.MenuItem;
 
 import java.util.List;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
 
-    private final List<Menu_item> menuItemList;
+    private final List<MenuItem> menuItemList;
     private final OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
-        void onItemClick(Menu_item menuItem);
+        void onItemClick(MenuItem menuItem);
     }
 
-    public MenuAdapter(List<Menu_item> menuItemList, OnItemClickListener onItemClickListener) {
+    public MenuAdapter(List<MenuItem> menuItemList, OnItemClickListener onItemClickListener) {
         this.menuItemList = menuItemList;
         this.onItemClickListener = onItemClickListener;
     }
@@ -30,13 +30,13 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     @NonNull
     @Override
     public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.menu_item, parent, false);
         return new MenuViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
-        Menu_item menuItem = menuItemList.get(position);
+        MenuItem menuItem = menuItemList.get(position);
         holder.bind(menuItem);
     }
 
@@ -52,14 +52,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
         MenuViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
-            itemPriceTextView = itemView.findViewById(R.id.itemPriceTextView);
+            itemNameTextView = itemView.findViewById(R.id.item_name);
+            itemPriceTextView = itemView.findViewById(R.id.item_price);
             itemView.setOnClickListener(this);
         }
 
-        void bind(Menu_item menuItem) {
+        void bind(MenuItem menuItem) {
             itemNameTextView.setText(menuItem.getName());
-            itemPriceTextView.setText(menuItem.getPrice());
+            itemPriceTextView.setText(String.valueOf(menuItem.getPrice()));
         }
 
         @Override
