@@ -8,12 +8,14 @@ public class MenuItem implements Parcelable {
     private String name;
     private double price;
     private String isAvailable;
+    private String categorie;  // New category variable
 
-    public MenuItem(int id, String name, double price, String isAvailable) {
+    public MenuItem(int id, String name, double price, String isAvailable, String categorie) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.isAvailable = isAvailable;
+        this.categorie = categorie;  // Initialize category
     }
 
     protected MenuItem(Parcel in) {
@@ -21,6 +23,7 @@ public class MenuItem implements Parcelable {
         name = in.readString();
         price = in.readDouble();
         isAvailable = in.readString();
+        categorie = in.readString();  // Read category from parcel
     }
 
     public static final Creator<MenuItem> CREATOR = new Creator<MenuItem>() {
@@ -51,7 +54,7 @@ public class MenuItem implements Parcelable {
         this.name = name;
     }
 
-    public  double getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -67,6 +70,14 @@ public class MenuItem implements Parcelable {
         this.isAvailable = isAvailable;
     }
 
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -78,5 +89,6 @@ public class MenuItem implements Parcelable {
         parcel.writeString(name);
         parcel.writeDouble(price);
         parcel.writeString(isAvailable);
+        parcel.writeString(categorie);  // Write category to parcel
     }
 }

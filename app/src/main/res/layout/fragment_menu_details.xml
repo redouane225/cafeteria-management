@@ -78,6 +78,21 @@
         android:layout_height="50dp"
         android:padding="8dp"
         android:entries="@array/availability_options" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="categorie"
+        android:textSize="20sp"
+        android:fontFamily="@font/lato_bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"/>
+    <Spinner
+        android:id="@+id/menu_category"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:entries="@array/menu_categories"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSave"

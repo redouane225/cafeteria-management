@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cafeteriamanagement.R;
 import com.example.cafeteriamanagement.model.MenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
 
     private final List<MenuItem> menuItemList;
+    private final List<MenuItem> menuItemListFull;
     private final OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
@@ -23,7 +25,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     }
 
     public MenuAdapter(List<MenuItem> menuItemList, OnItemClickListener onItemClickListener) {
-        this.menuItemList = menuItemList;
+        this.menuItemList = new ArrayList<>(menuItemList);
+        this.menuItemListFull = new ArrayList<>(menuItemList);
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -43,6 +46,21 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     @Override
     public int getItemCount() {
         return menuItemList.size();
+    }
+
+    public void filter(String text) {
+        menuItemList.clear();
+        if (text.isEmpty()) {
+            menuItemList.addAll(menuItemListFull);
+        } else {
+            text = text.toLowerCase();
+            for (MenuItem item : menuItemListFull) {
+                if (item.getName().toLowerCase().contains(text)) {
+                    menuItemList.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

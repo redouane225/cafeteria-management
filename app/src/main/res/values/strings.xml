@@ -53,10 +53,16 @@
         <item>Available</item>
         <item>Unavailable</item>
     </string-array>
+
     <string-array name="status_options">
         <item>Active</item>
         <item>Off duty</item>
     </string-array>
 
+    <string-array name="menu_categories">
+        <item>Baverages</item>
+        <item>Bakery</item>
+        <item>Special</item>
+    </string-array>
 
 </resources>

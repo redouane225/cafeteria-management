@@ -26,6 +26,7 @@ public class MenuDetailsFragment extends Fragment {
     private EditText itemNameEditText;
     private EditText priceEditText;
     private Spinner availabilitySpinner;
+    private Spinner categorySpinner;  // New category spinner
     private Button saveButton;
     private MenuItem menuItem;
 
@@ -48,17 +49,23 @@ public class MenuDetailsFragment extends Fragment {
         itemNameEditText = view.findViewById(R.id.etitemname);
         priceEditText = view.findViewById(R.id.editemprice);
         availabilitySpinner = view.findViewById(R.id.menu_availability);
+        categorySpinner = view.findViewById(R.id.menu_category);  // Initialize category spinner
         saveButton = view.findViewById(R.id.btnSave);
 
-        // Create and set up the spinner adapter
+        // Create and set up the availability spinner adapter
         ArrayList<String> availability = new ArrayList<>();
         availability.add("Available");
         availability.add("Unavailable");
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_spinner_item, availability);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         availabilitySpinner.setAdapter(adapter);
+
+        // Create and set up the category spinner adapter
+        ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(requireContext(),
+                R.array.menu_categories, android.R.layout.simple_spinner_item);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(categoryAdapter);
 
         // Retrieve menu item from arguments
         if (getArguments() != null) {
@@ -67,6 +74,7 @@ public class MenuDetailsFragment extends Fragment {
                 itemNameEditText.setText(menuItem.getName());
                 priceEditText.setText(String.valueOf(menuItem.getPrice()));
                 availabilitySpinner.setSelection(availability.indexOf(menuItem.getIsAvailable()));
+                categorySpinner.setSelection(categoryAdapter.getPosition(menuItem.getCategorie()));  // Set category spinner selection
             }
         }
 
@@ -88,6 +96,7 @@ public class MenuDetailsFragment extends Fragment {
             return;
         }
         String availability = availabilitySpinner.getSelectedItem().toString();
+        String category = categorySpinner.getSelectedItem().toString();  // Get selected category
 
         if (itemName.isEmpty() || price.isEmpty()) {
             Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
@@ -95,11 +104,12 @@ public class MenuDetailsFragment extends Fragment {
         }
 
         if (menuItem == null) {
-            menuItem = new MenuItem(0,itemName, itemPrice, availability);
+            menuItem = new MenuItem(0, itemName, itemPrice, availability, category);
         } else {
             menuItem.setName(itemName);
             menuItem.setPrice(itemPrice);
             menuItem.setIsAvailable(availability);
+            menuItem.setCategorie(category);  // Set category
         }
 
         // Notify MenuFragment to update the menu list

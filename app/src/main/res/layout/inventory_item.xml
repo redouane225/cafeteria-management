@@ -8,7 +8,7 @@
     app:cardElevation="10dp"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="18dp"
-    android:layout_marginTop="28dp"
+    android:layout_marginTop="45dp"
     app:cardBackgroundColor="@color/very_light_beige" >
 
     <RelativeLayout
@@ -63,14 +63,5 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/inventoryMenuButton"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/dot_menu"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:contentDescription="More options"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
