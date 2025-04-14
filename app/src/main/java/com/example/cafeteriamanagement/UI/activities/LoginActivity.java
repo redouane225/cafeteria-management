@@ -3,24 +3,30 @@ package com.example.cafeteriamanagement.UI.activities;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.cafeteriamanagement.R;
 import com.example.cafeteriamanagement.UI.activities.StaffDashboardActivity;
+import com.example.cafeteriamanagement.model.Admin;
+import com.example.cafeteriamanagement.model.User;
+import com.example.cafeteriamanagement.model.Waiter;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.List;
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText editTextUsername, editTextPassword;
     private Button buttonLogin;
-    private ExecutorService executorService;
+
+    // Dummy users list
+    private List<User> dummyUsers = Arrays.asList(
+            new Admin(2,"karim nono", "Admin","admin123"),
+            new Waiter(1,"redouane sofiane","Waiter","waiter321","Active")
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
-
-        executorService = Executors.newSingleThreadExecutor();
 
         buttonLogin.setOnClickListener(view -> loginUser());
     }
@@ -45,51 +49,30 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        if (!isValidUsername(username) || !isValidPassword(password)) {
-            Toast.makeText(this, "Invalid username or password format", Toast.LENGTH_SHORT).show();
-            return;
+        // Validate username and password
+        boolean isValid = false;
+        User loggedInUser = null;
+
+        for (User user : dummyUsers) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                isValid = true;
+                loggedInUser = user;
+                break;
+            }
         }
 
-        // Perform login in a background thread
-        executorService.execute(() -> simulateLogin(username, password));
-    }
+        if (isValid) {
+            Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
 
-    private boolean isValidUsername(String username) {
-        // Add your username validation logic here
-        return username.length() >= 3;
-    }
-
-    private boolean isValidPassword(String password) {
-        // Add your password validation logic here
-        return password.length() >= 6;
-    }
-
-    private void simulateLogin(String username, String password) {
-        // Simulating a login response from the server
-        String response = "{ \"status\": \"success\", \"role\": \"admin\" }"; // Example response
-
-        runOnUiThread(() -> {
-            try {
-                JSONObject jsonResponse = new JSONObject(response);
-                String status = jsonResponse.getString("status");
-                String role = jsonResponse.getString("role");
-
-                if (status.equals("success")) {
-                    if (role.equals("admin")) {
-                        startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-                        finish();
-                    } else if (role.equals("staff")) {
-                        startActivity(new Intent(LoginActivity.this, StaffDashboardActivity.class));
-                        finish();
-                    }
-                } else {
-                    Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Login failed. Try again.", Toast.LENGTH_SHORT).show();
-            }
-        });
+            // Navigate to the correct dashboard based on role
+            Intent intent = loggedInUser instanceof User
+                    ? new Intent(this, DashboardActivity.class)
+                    : new Intent(this, StaffDashboardActivity.class);
+            intent.putExtra("user", (Parcelable)loggedInUser);  // Pass the user object (make sure it implements Parcelable)
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+        }
     }
 }

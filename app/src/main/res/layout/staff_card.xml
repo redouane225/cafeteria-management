@@ -6,8 +6,8 @@
     android:layout_height="120dp"
     app:cardCornerRadius="10dp"
     app:cardElevation="10dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="18dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="18dp"
     android:layout_marginTop="28dp"
     app:cardBackgroundColor="@color/very_light_beige" >
 

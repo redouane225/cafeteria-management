@@ -7,16 +7,15 @@
     android:padding="24dp"
     android:gravity="top|center_horizontal">
 
-    <!-- Title -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:layout_marginTop="100dp"
-        android:fontFamily="@font/lato_bold"
+        android:layout_marginTop="80dp"
+        android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="Log In"
         android:textColor="@color/black"
-        android:textSize="60dp"
+        android:textSize="60sp"
         android:textStyle="bold" />
 
 
@@ -36,10 +35,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
             android:text="Username"
-            android:textSize="20sp"
-            android:fontFamily="@font/lato_bold"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <EditText
@@ -71,7 +70,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lato_bold"
+            android:fontFamily="sans-serif-medium"
             android:text="Password"
             android:textColor="@color/black"
             android:textSize="20sp" />
@@ -93,7 +92,7 @@
         android:id="@+id/buttonLogin"
          android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="Log In"
+        android:text="Login"
         android:layout_marginTop="70dp"
         android:textColor="@color/white"
         android:backgroundTint="@color/dark_chocolate"

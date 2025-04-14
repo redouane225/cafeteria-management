@@ -14,8 +14,8 @@ import com.example.cafeteriamanagement.UI.fragments.InventoryFragment;
 import com.example.cafeteriamanagement.UI.fragments.MenuDetailsFragment;
 import com.example.cafeteriamanagement.UI.fragments.MenuFragment;
 import com.example.cafeteriamanagement.UI.fragments.ProfileFragment;
-import com.example.cafeteriamanagement.UI.fragments.StaffdetailFragment;
-import com.example.cafeteriamanagement.UI.fragments.StafflistFragment;
+import com.example.cafeteriamanagement.UI.fragments.Staffdetailes;
+import com.example.cafeteriamanagement.UI.fragments.staffFragment;
 import com.example.cafeteriamanagement.databinding.ActivityDashboardBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -25,7 +25,7 @@ public class DashboardActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private Fragment activeFragment;
     private final MenuFragment menuFragment = new MenuFragment();
-    private final StafflistFragment staffFragment = new StafflistFragment();
+    private final staffFragment staffFragment = new staffFragment();
     private final InventoryFragment inventoryFragment = new InventoryFragment();
     private final ProfileFragment profileFragment = new ProfileFragment();
 
@@ -90,8 +90,8 @@ public class DashboardActivity extends AppCompatActivity {
         if (activeFragment instanceof MenuFragment) {
             addItemFragment = new MenuDetailsFragment();
             tag = "MenuDetails";
-        } else if (activeFragment instanceof StafflistFragment) {
-            addItemFragment = new StaffdetailFragment();
+        } else if (activeFragment instanceof staffFragment) {
+            addItemFragment = new Staffdetailes();
             tag = "StaffDetails";
         } else if (activeFragment instanceof InventoryFragment) {
             addItemFragment = new InventoryDetails();

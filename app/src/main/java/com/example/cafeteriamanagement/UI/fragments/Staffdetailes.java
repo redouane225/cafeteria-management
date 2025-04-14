@@ -12,10 +12,10 @@ import com.example.cafeteriamanagement.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link StafflistFragment#newInstance} factory method to
+ * Use the {@link Staffdetailes#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StafflistFragment extends Fragment {
+public class Staffdetailes extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class StafflistFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public StafflistFragment() {
+    public Staffdetailes() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class StafflistFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment StafflistFragement.
+     * @return A new instance of fragment Staffdetailes.
      */
     // TODO: Rename and change types and number of parameters
-    public static StafflistFragment newInstance(String param1, String param2) {
-        StafflistFragment fragment = new StafflistFragment();
+    public static Staffdetailes newInstance(String param1, String param2) {
+        Staffdetailes fragment = new Staffdetailes();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class StafflistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_stafflist, container, false);
+        return inflater.inflate(R.layout.fragment_staffdetailed, container, false);
     }
 }

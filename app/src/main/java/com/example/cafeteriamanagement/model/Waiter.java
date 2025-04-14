@@ -1,25 +1,35 @@
 package com.example.cafeteriamanagement.model;
 
-    public class Waiter extends User {
-        private boolean isActive;
+public class Waiter extends User {
+    private String status;
 
-        // Constructor
-        public Waiter(int userId, String username, String password) {
-            super(userId, username, password, "Waiter");  // Le rôle est automatiquement "Waiter"
-        }
+    public Waiter(int userId, String username, String role,String password ,  String status) {
+        super(userId, username, "Waiter",password);
+        this.status = status;
+    }
 
-        // Method to add an order
-        public void addOrder(int orderId) {
-            System.out.println("Order " + orderId + " has been added by " + getUsername());
-        }
+    public String getStatus() {
+        return status;
+    }
 
-        // Method to update an order
-        public void updateOrder(int orderId) {
-            System.out.println("Order " + orderId + " has been updated by " + getUsername());
-        }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-        // Method to cancel an order
-        public void cancelOrder(int orderId) {
-            System.out.println("Order " + orderId + " has been canceled by " + getUsername());
-        }
+    public boolean isActive() {
+        return "Active".equalsIgnoreCase(status);
+    }
+
+    // All the following methods must be inside the class
+    public void addOrder(int orderId) {
+        System.out.println("Order " + orderId + " has been added by " + getUsername());
+    }
+
+    public void updateOrder(int orderId) {
+        System.out.println("Order " + orderId + " has been updated by " + getUsername());
+    }
+
+    public void cancelOrder(int orderId) {
+        System.out.println("Order " + orderId + " has been canceled by " + getUsername());
+    }
 }

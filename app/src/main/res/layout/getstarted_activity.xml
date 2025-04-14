@@ -68,7 +68,7 @@
         android:fontFamily="@font/lato_bold"
         android:gravity="center"
         android:text="@string/slogant_text"
-        android:textColor="@color/deep_brown"
+        android:textColor="@color/beige"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btnGetStarted"

@@ -42,11 +42,11 @@ public class getStarted_Activity extends AppCompatActivity {
             return insets;
         });
 
-        // Click listener for "Get Started" button to navigate to LoginActivity
+
         findViewById(R.id.btnGetStarted).setOnClickListener(v -> {
             Intent intent = new Intent(getStarted_Activity.this, LoginActivity.class);
             startActivity(intent);
-            finish(); // Finish this activity so the user doesn't go back to it
+            finish();
         });
     }
 }

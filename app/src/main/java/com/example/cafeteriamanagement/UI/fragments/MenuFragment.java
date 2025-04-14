@@ -81,7 +81,6 @@ public class MenuFragment extends Fragment implements MenuAdapter.OnItemClickLis
             }
         });
 
-        // Set up TabLayout and ViewPager2 with MenuPageAdapter
         MenuPagerAdapter menuPageAdapter = new MenuPagerAdapter(requireActivity());
         viewPager.setAdapter(menuPageAdapter);
 
