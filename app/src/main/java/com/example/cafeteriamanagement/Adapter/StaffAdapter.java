@@ -1,4 +1,4 @@
-package com.example.cafeteriamanagement.adapters;
+package com.example.cafeteriamanagement.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -5,16 +5,19 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/muted_brown"
     tools:context=".UI.activities.StaffDashboardActivity">
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="welcome staff"
-        android:textSize="50sp"
+        android:fontFamily="@font/lato_bold"
         android:gravity="center"
-        android:textColor="@color/muted_brown"
-        android:fontFamily="@font/lato_bold"/>
+        android:text="welcome staff"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,13 +12,12 @@ import android.content.Intent;
 
 import androidx.core.view.WindowInsetsControllerCompat;
 
-public class getStarted_Activity extends AppCompatActivity {
+public class GetStartedActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Enable edge-to-edge display for immersive experience
         WindowInsetsControllerCompat insetsController = new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
         insetsController.hide(WindowInsetsCompat.Type.systemBars()); // Hides status & navigation bars
 
@@ -35,7 +34,7 @@ public class getStarted_Activity extends AppCompatActivity {
 
 
         findViewById(R.id.btnGetStarted).setOnClickListener(v -> {
-            Intent intent = new Intent(getStarted_Activity.this, LoginActivity.class);
+            Intent intent = new Intent(GetStartedActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         });
