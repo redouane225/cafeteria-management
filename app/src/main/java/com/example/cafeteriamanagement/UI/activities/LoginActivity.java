@@ -3,17 +3,16 @@ package com.example.cafeteriamanagement.UI.activities;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.cafeteriamanagement.R;
-import com.example.cafeteriamanagement.UI.activities.StaffDashboardActivity;
 import com.example.cafeteriamanagement.model.Admin;
 import com.example.cafeteriamanagement.model.User;
 import com.example.cafeteriamanagement.model.Waiter;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Arrays;
 
@@ -24,8 +23,8 @@ public class LoginActivity extends AppCompatActivity {
 
     // Dummy users list
     private List<User> dummyUsers = Arrays.asList(
-            new Admin(2,"karim nono", "Admin","admin123"),
-            new Waiter(1,"redouane sofiane","Waiter","waiter321","Active")
+            new Admin(2, "karim nono", "Admin", "admin123"),
+            new Waiter(1, "redouane sofiane", "Waiter", "waiter321", "Active")
     );
 
     @Override
@@ -50,25 +49,30 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Validate username and password
-        boolean isValid = false;
         User loggedInUser = null;
 
         for (User user : dummyUsers) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                isValid = true;
                 loggedInUser = user;
                 break;
             }
         }
 
-        if (isValid) {
+        if (loggedInUser != null) {
             Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
 
-            // Navigate to the correct dashboard based on role
-            Intent intent = loggedInUser instanceof User
-                    ? new Intent(this, DashboardActivity.class)
-                    : new Intent(this, StaffDashboardActivity.class);
-            intent.putExtra("user", (Parcelable)loggedInUser);  // Pass the user object (make sure it implements Parcelable)
+            Intent intent;
+            if (loggedInUser.getRole().equals("Admin")) {
+                intent = new Intent(LoginActivity.this , DashboardActivity.class);
+            } else if (loggedInUser.getRole().equals("Waiter")) {
+                intent = new Intent(this, StaffDashboardActivity.class);
+            } else {
+                Toast.makeText(this, "Unknown role, cannot navigate", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Pass the user object
+            intent.putExtra("user", (Serializable) loggedInUser);
             startActivity(intent);
             finish();
         } else {

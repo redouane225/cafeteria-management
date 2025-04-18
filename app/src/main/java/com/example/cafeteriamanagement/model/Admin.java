@@ -1,6 +1,8 @@
 package com.example.cafeteriamanagement.model;
 
-public class Admin extends User {
+import java.io.Serializable;
+
+public class Admin extends User implements Serializable {
 
 
     // Constructor

@@ -17,6 +17,7 @@ import com.example.cafeteriamanagement.UI.fragments.ProfileFragment;
 import com.example.cafeteriamanagement.UI.fragments.Staffdetailes;
 import com.example.cafeteriamanagement.UI.fragments.staffFragment;
 import com.example.cafeteriamanagement.databinding.ActivityDashboardBinding;
+import com.example.cafeteriamanagement.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -32,6 +33,15 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        User user = (User) getIntent().getSerializableExtra("user");
+
+        if (user == null) {
+            Toast.makeText(this, "User data not found!", Toast.LENGTH_SHORT).show();
+            finish(); // Prevent crash by closing the activity
+            return;
+        }
+
+
 
         // Inflate the binding
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
@@ -52,16 +62,16 @@ public class DashboardActivity extends AppCompatActivity {
 
         binding.bottomnavigationview.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.menu_dashboard) {
+            if (itemId == R.id.dashboard) {
                 switchFragment(menuFragment);
                 return true;
-            } else if (itemId == R.id.menu_staff) {
+            } else if (itemId == R.id.staff) {
                 switchFragment(staffFragment);
                 return true;
-            } else if (itemId == R.id.menu_inventory) {
+            } else if (itemId == R.id.inventory) {
                 switchFragment(inventoryFragment);
                 return true;
-            } else if (itemId == R.id.menu_profile) {
+            } else if (itemId == R.id.profile) {
                 switchFragment(profileFragment);
                 return true;
             } else {
@@ -83,12 +93,12 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void showAddItemFragment() {
-        // Navigate to the appropriate "Add New Item" fragment based on the current fragment
         Fragment addItemFragment = null;
         String tag = null;
 
         if (activeFragment instanceof MenuFragment) {
-            addItemFragment = new MenuDetailsFragment();
+            // Add Mode: Passing null menu item
+            addItemFragment = MenuDetailsFragment.newInstance(null);
             tag = "MenuDetails";
         } else if (activeFragment instanceof staffFragment) {
             addItemFragment = new Staffdetailes();
@@ -108,4 +118,5 @@ public class DashboardActivity extends AppCompatActivity {
             transaction.commit();
         }
     }
+
 }

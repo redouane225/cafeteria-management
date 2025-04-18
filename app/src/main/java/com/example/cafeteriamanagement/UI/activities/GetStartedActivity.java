@@ -24,13 +24,7 @@ public class GetStartedActivity extends AppCompatActivity {
         setContentView(R.layout.getstarted_activity);
 
         // Handle system bar insets dynamically
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            v.setPadding(insets.getInsets(WindowInsetsCompat.Type.systemBars()).left,
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).top,
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).right,
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom);
-            return insets;
-        });
+
 
 
         findViewById(R.id.btnGetStarted).setOnClickListener(v -> {

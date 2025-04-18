@@ -1,43 +1,28 @@
 package com.example.cafeteriamanagement.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class MenuItem implements Parcelable {
+public class MenuItem implements Serializable {
+
+    // Add a version ID to ensure compatibility during serialization (optional but recommended)
+    //private static final long serialVersionUID = 1L;
+
     private int id;
     private String name;
     private double price;
     private String isAvailable;
-    private String categorie;  // New category variable
+    private String categorie;
 
+    // Constructor
     public MenuItem(int id, String name, double price, String isAvailable, String categorie) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.isAvailable = isAvailable;
-        this.categorie = categorie;  // Initialize category
+        this.categorie = categorie;
     }
 
-    protected MenuItem(Parcel in) {
-        id = in.readInt();
-        name = in.readString();
-        price = in.readDouble();
-        isAvailable = in.readString();
-        categorie = in.readString();  // Read category from parcel
-    }
-
-    public static final Creator<MenuItem> CREATOR = new Creator<MenuItem>() {
-        @Override
-        public MenuItem createFromParcel(Parcel in) {
-            return new MenuItem(in);
-        }
-
-        @Override
-        public MenuItem[] newArray(int size) {
-            return new MenuItem[size];
-        }
-    };
-
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -77,18 +62,15 @@ public class MenuItem implements Parcelable {
     public void setCategorie(String categorie) {
         this.categorie = categorie;
     }
-
     @Override
-    public int describeContents() {
-        return 0;
+    public String toString() {
+        return "MenuItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", isAvailable='" + isAvailable + '\'' +
+                ", categorie='" + categorie + '\'' +
+                '}';
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeString(name);
-        parcel.writeDouble(price);
-        parcel.writeString(isAvailable);
-        parcel.writeString(categorie);  // Write category to parcel
-    }
 }

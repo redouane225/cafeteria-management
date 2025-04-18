@@ -1,6 +1,8 @@
 package com.example.cafeteriamanagement.model;
 
-public class Waiter extends User {
+import java.io.Serializable;
+
+public class Waiter extends User implements Serializable {
     private String status;
 
     public Waiter(int userId, String username, String role,String password ,  String status) {

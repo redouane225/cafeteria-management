@@ -5,9 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.cafeteriamanagement.R;
+import com.example.cafeteriamanagement.databinding.FragmentMenuDetailsBinding;
 import com.example.cafeteriamanagement.model.MenuItem;
 
 import java.util.ArrayList;
@@ -22,18 +20,14 @@ import java.util.ArrayList;
 public class MenuDetailsFragment extends Fragment {
 
     private static final String ARG_MENU_ITEM = "menu_item";
+    private FragmentMenuDetailsBinding binding; //  ADDED: View Binding reference
 
-    private EditText itemNameEditText;
-    private EditText priceEditText;
-    private Spinner availabilitySpinner;
-    private Spinner categorySpinner;  // New category spinner
-    private Button saveButton;
     private MenuItem menuItem;
 
     public static MenuDetailsFragment newInstance(@Nullable MenuItem menuItem) {
         MenuDetailsFragment fragment = new MenuDetailsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_MENU_ITEM, menuItem);
+        args.putSerializable(ARG_MENU_ITEM, menuItem); // Serializable used
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,63 +37,64 @@ public class MenuDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_menu_details, container, false);
 
-        // Initialize views
-        itemNameEditText = view.findViewById(R.id.etitemname);
-        priceEditText = view.findViewById(R.id.editemprice);
-        availabilitySpinner = view.findViewById(R.id.menu_availability);
-        categorySpinner = view.findViewById(R.id.menu_category);  // Initialize category spinner
-        saveButton = view.findViewById(R.id.btnSave);
+        //  REPLACED: Manual inflation with ViewBinding
+        binding = FragmentMenuDetailsBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        // Create and set up the availability spinner adapter
-        ArrayList<String> availability = new ArrayList<>();
-        availability.add("Available");
-        availability.add("Unavailable");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
-                android.R.layout.simple_spinner_item, availability);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        availabilitySpinner.setAdapter(adapter);
+        //  REPLACED: findViewById with binding references
+        ArrayList<String> availabilityList = new ArrayList<>();
+        availabilityList.add("Available");
+        availabilityList.add("Unavailable");
 
-        // Create and set up the category spinner adapter
-        ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.menu_categories, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> availabilityAdapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                availabilityList
+        );
+        availabilityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.menuAvailability.setAdapter(availabilityAdapter);
+
+        ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.menu_categories,
+                android.R.layout.simple_spinner_item
+        );
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySpinner.setAdapter(categoryAdapter);
+        binding.menuCategory.setAdapter(categoryAdapter);
 
-        // Retrieve menu item from arguments
+        // Load data if editing
         if (getArguments() != null) {
-            menuItem = getArguments().getParcelable(ARG_MENU_ITEM);
+            menuItem = (MenuItem) getArguments().getSerializable(ARG_MENU_ITEM);
             if (menuItem != null) {
-                itemNameEditText.setText(menuItem.getName());
-                priceEditText.setText(String.valueOf(menuItem.getPrice()));
-                availabilitySpinner.setSelection(availability.indexOf(menuItem.getIsAvailable()));
-                categorySpinner.setSelection(categoryAdapter.getPosition(menuItem.getCategorie()));  // Set category spinner selection
+                binding.etitemname.setText(menuItem.getName());
+                binding.editemprice.setText(String.valueOf(menuItem.getPrice()));
+                binding.menuAvailability.setSelection(availabilityList.indexOf(menuItem.getIsAvailable()));
+                binding.menuCategory.setSelection(categoryAdapter.getPosition(menuItem.getCategorie()));
             }
         }
 
-        // Set click listener for save button
-        saveButton.setOnClickListener(v -> saveMenuItem());
+        binding.btnSave.setOnClickListener(v -> saveMenuItem()); //  Event on binding
 
         return view;
     }
 
     private void saveMenuItem() {
-        String itemName = itemNameEditText.getText().toString().trim();
-        String price = priceEditText.getText().toString().trim();
-        double itemPrice;
+        String itemName = binding.etitemname.getText().toString().trim();
+        String priceText = binding.editemprice.getText().toString().trim();
+        String availability = binding.menuAvailability.getSelectedItem().toString();
+        String category = binding.menuCategory.getSelectedItem().toString();
 
-        try {
-            itemPrice = Double.parseDouble(price);
-        } catch (NumberFormatException e) {
-            Toast.makeText(requireContext(), "Invalid price format", Toast.LENGTH_SHORT).show();
+        if (itemName.isEmpty() || priceText.isEmpty() || category == null) {
+            Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
-        String availability = availabilitySpinner.getSelectedItem().toString();
-        String category = categorySpinner.getSelectedItem().toString();  // Get selected category
 
-        if (itemName.isEmpty() || price.isEmpty()) {
-            Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        double itemPrice;
+        try {
+            itemPrice = Double.parseDouble(priceText);
+        } catch (NumberFormatException e) {
+            Toast.makeText(requireContext(), "Invalid price format", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -109,16 +104,14 @@ public class MenuDetailsFragment extends Fragment {
             menuItem.setName(itemName);
             menuItem.setPrice(itemPrice);
             menuItem.setIsAvailable(availability);
-            menuItem.setCategorie(category);  // Set category
+            menuItem.setCategorie(category);
         }
 
-        // Notify MenuFragment to update the menu list
-        Fragment targetFragment = getTargetFragment();
-        if (targetFragment instanceof MenuFragment) {
-            ((MenuFragment) targetFragment).updateMenuItemList(menuItem);
-        }
+        // Return updated item
+        Bundle result = new Bundle();
+        result.putSerializable("menu_item", menuItem); // match the key with receiving side
+        getParentFragmentManager().setFragmentResult("menu_item_request", result);
 
-        // Close the fragment
         requireActivity().getSupportFragmentManager().popBackStack();
     }
 }
