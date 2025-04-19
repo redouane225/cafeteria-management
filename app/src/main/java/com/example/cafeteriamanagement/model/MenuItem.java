@@ -21,6 +21,7 @@ public class MenuItem implements Serializable {
         this.isAvailable = isAvailable;
         this.categorie = categorie;
     }
+    public MenuItem(){}
 
     // Getters and Setters
     public int getId() {

@@ -23,8 +23,8 @@ public class LoginActivity extends AppCompatActivity {
 
     // Dummy users list
     private List<User> dummyUsers = Arrays.asList(
-            new Admin(2, "karim nono", "Admin", "admin123"),
-            new Waiter(1, "redouane sofiane", "Waiter", "waiter321", "Active")
+            new Admin(2, "Admin", "Admin", "admin123"),
+            new Waiter(1, "Staff", "Waiter", "waiter321", "Active")
     );
 
     @Override

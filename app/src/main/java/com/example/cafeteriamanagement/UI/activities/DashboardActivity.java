@@ -9,16 +9,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cafeteriamanagement.R;
-import com.example.cafeteriamanagement.UI.fragments.InventoryDetails;
 import com.example.cafeteriamanagement.UI.fragments.InventoryFragment;
-import com.example.cafeteriamanagement.UI.fragments.MenuDetailsFragment;
 import com.example.cafeteriamanagement.UI.fragments.MenuFragment;
 import com.example.cafeteriamanagement.UI.fragments.ProfileFragment;
-import com.example.cafeteriamanagement.UI.fragments.Staffdetailes;
 import com.example.cafeteriamanagement.UI.fragments.staffFragment;
 import com.example.cafeteriamanagement.databinding.ActivityDashboardBinding;
 import com.example.cafeteriamanagement.model.User;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -41,15 +37,11 @@ public class DashboardActivity extends AppCompatActivity {
             return;
         }
 
-
-
-        // Inflate the binding
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         fragmentManager = getSupportFragmentManager();
 
-        // Initialize Fragments (Only add once)
         if (savedInstanceState == null) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.fragment_container, profileFragment, "Profile").hide(profileFragment);
@@ -79,9 +71,6 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        // Set up Floating Action Button (FAB) to add new items
-        FloatingActionButton fab = binding.fab;
-        fab.setOnClickListener(view -> showAddItemFragment());
     }
 
     private void switchFragment(Fragment targetFragment) {
@@ -91,32 +80,4 @@ public class DashboardActivity extends AppCompatActivity {
             activeFragment = targetFragment;
         }
     }
-
-    private void showAddItemFragment() {
-        Fragment addItemFragment = null;
-        String tag = null;
-
-        if (activeFragment instanceof MenuFragment) {
-            // Add Mode: Passing null menu item
-            addItemFragment = MenuDetailsFragment.newInstance(null);
-            tag = "MenuDetails";
-        } else if (activeFragment instanceof staffFragment) {
-            addItemFragment = new Staffdetailes();
-            tag = "StaffDetails";
-        } else if (activeFragment instanceof InventoryFragment) {
-            addItemFragment = new InventoryDetails();
-            tag = "InventoryDetails";
-        } else {
-            Toast.makeText(this, "Invalid Action", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (addItemFragment != null) {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.fragment_container, addItemFragment, tag);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
-    }
-
 }

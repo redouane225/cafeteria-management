@@ -58,6 +58,17 @@ public class MenuFragment extends Fragment {
         binding.etSearch.setOnClickListener(v ->
                 Toast.makeText(getContext(), "Search feature coming soon", Toast.LENGTH_SHORT).show()
         );
+        binding.btnAddMenuItem.setOnClickListener(v -> {
+            MenuItem newItem = new MenuItem(); // empty object for add mode
+            MenuDetailsFragment menuDetailsFragment = MenuDetailsFragment.newInstance(newItem);
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, menuDetailsFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
 
         //  Handle result from MenuDetailsFragment
         getParentFragmentManager().setFragmentResultListener("menu_item_request", this,
