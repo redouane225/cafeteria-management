@@ -4,8 +4,11 @@ import java.io.Serializable;
 
 public class MenuItem implements Serializable {
 
-    // Add a version ID to ensure compatibility during serialization (optional but recommended)
-    //private static final long serialVersionUID = 1L;
+    private static int idCounter = 1;
+
+    public static int getNextId() {
+        return idCounter++;
+    }
 
     private int id;
     private String name;

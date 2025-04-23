@@ -9,12 +9,6 @@
         android:icon="@drawable/users_staff_icon"
         android:title="Staff"/>
     <item
-        android:id="@+id/fab"
-        android:icon="@android:color/transparent"
-        android:title=""
-        android:enabled="false"
-        />
-    <item
         android:id="@+id/inventory"
         android:icon="@drawable/shopping_icon"
         android:title="Inventory" />

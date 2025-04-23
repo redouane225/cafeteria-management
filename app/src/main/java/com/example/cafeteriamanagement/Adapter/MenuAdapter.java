@@ -1,5 +1,6 @@
 package com.example.cafeteriamanagement.Adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,20 +48,19 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     public int getItemCount() {
         return menuItemList.size();
     }
-
-    public void filter(String text) {
-        menuItemList.clear();
-        if (text.isEmpty()) {
-            menuItemList.addAll(menuItemListFull);
-        } else {
-            text = text.toLowerCase();
-            for (MenuItem item : menuItemListFull) {
-                if (item.getName().toLowerCase().contains(text)) {
-                    menuItemList.add(item);
-                }
+    public void updateMenuItem(MenuItem updatedItem) {
+        for (int i = 0; i < menuItemList.size(); i++) {
+            if (menuItemList.get(i).getId() == updatedItem.getId()) {
+                menuItemList.set(i, updatedItem);
+                notifyItemChanged(i);
+                return;
             }
         }
-        notifyDataSetChanged();
+        // Add new item if not found
+        menuItemList.add(updatedItem);
+        notifyItemInserted(menuItemList.size() - 1);
+        Log.d("MenuFlow", "MenuAdapter updating item: " + updatedItem.getName());
+
     }
 
     class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

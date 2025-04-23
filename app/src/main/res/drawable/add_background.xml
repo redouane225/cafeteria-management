@@ -5,7 +5,7 @@
     <solid android:color="@color/very_light_beige" /> <!-- You can change this to any color you prefer -->
 
     <!-- Optional rounded corners -->
-    <corners android:radius="10dp" />
+    <corners android:radius="14dp" />
 
     <!-- Optional padding inside the shape -->
     <padding

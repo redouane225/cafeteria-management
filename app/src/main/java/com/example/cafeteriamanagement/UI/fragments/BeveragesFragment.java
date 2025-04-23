@@ -1,6 +1,7 @@
 package com.example.cafeteriamanagement.UI.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import com.example.cafeteriamanagement.model.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaveragesFragment extends Fragment {
+public class BeveragesFragment extends Fragment implements  MenuCategoryInterface{
 
     private FragmentBaveragesBinding binding;
     private MenuAdapter menuAdapter;
@@ -39,14 +40,17 @@ public class BaveragesFragment extends Fragment {
         menuAdapter = new MenuAdapter(menuItemList, this::openMenuDetailsFragment);
         binding.recyclerBaverages.setAdapter(menuAdapter);
 
-        getParentFragmentManager().setFragmentResultListener("menu_item_updated", this, (key, bundle) -> {
-            MenuItem updatedItem = (MenuItem) bundle.getSerializable("updated_menu_item");
-            if (updatedItem != null && "Beverages".equals(updatedItem.getCategorie())) {
-                updateItemInList(updatedItem);
-            }
-        });
+
 
         return binding.getRoot();
+    }
+    public void  updateCategoryMenuItem(MenuItem updatedItem) {
+        if (menuAdapter != null) {
+            menuAdapter.updateMenuItem(updatedItem);
+            Log.d("MenuFlow", "BeveragesFragment updated with: " + updatedItem.getName());
+        } else {
+            Log.d("MenuFlow", "menuAdapter is null in BeveragesFragment.");
+        }
     }
 
     private void populateDummyData() {
@@ -56,38 +60,18 @@ public class BaveragesFragment extends Fragment {
         menuItemList.add(new MenuItem(12, "Iced Tea", 2.49, "Unavailable", "Beverages"));
     }
 
+    // Update this method to pass both the menuItem and the category
     private void openMenuDetailsFragment(MenuItem menuItem) {
-        MenuDetailsFragment menuDetailsFragment = MenuDetailsFragment.newInstance(menuItem);
+        MenuDetailsFragment menuDetailsFragment = MenuDetailsFragment.newInstance(menuItem, "Beverages"); // Pass category
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, menuDetailsFragment)
                 .addToBackStack(null)
                 .commit();
     }
 
-    private void updateItemInList(MenuItem updatedItem) {
-        for (int i = 0; i < menuItemList.size(); i++) {
-            if (menuItemList.get(i).getId() == updatedItem.getId()) {
-                menuItemList.set(i, updatedItem);
-                menuAdapter.notifyItemChanged(i);
-                return;
-            }
-        }
-        menuItemList.add(updatedItem);
-        menuAdapter.notifyItemInserted(menuItemList.size() - 1);
-    }
 
     public void refreshData() {
         menuAdapter.notifyDataSetChanged();
-    }
-
-    public void updateCategoryMenuItem(MenuItem updatedItem) {
-        for (int i = 0; i < menuItemList.size(); i++) {
-            if (menuItemList.get(i).getId() == updatedItem.getId()) {
-                menuItemList.set(i, updatedItem);
-                menuAdapter.notifyItemChanged(i);
-                return;
-            }
-        }
     }
 
     @Override
@@ -95,4 +79,6 @@ public class BaveragesFragment extends Fragment {
         super.onDestroyView();
         binding = null; // Avoid memory leaks
     }
+
+
 }

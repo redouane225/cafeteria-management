@@ -1,37 +1,54 @@
 package com.example.cafeteriamanagement.Adapter;
 
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.cafeteriamanagement.UI.fragments.BakeryFragment;
-import com.example.cafeteriamanagement.UI.fragments.BaveragesFragment;
+import com.example.cafeteriamanagement.UI.fragments.BeveragesFragment;
 import com.example.cafeteriamanagement.UI.fragments.SpecialFragment;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MenuPagerAdapter extends FragmentStateAdapter {
 
-    public MenuPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
-        super(fragmentActivity);
+    private final Map<String, Fragment> fragmentMap = new HashMap<>();
+
+    public MenuPagerAdapter(@NonNull Fragment fragment) {
+        super(fragment);
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        Fragment fragment;
         switch (position) {
             case 0:
-                return new BaveragesFragment();
+                fragment = new BeveragesFragment();
+                fragmentMap.put("Beverages", fragment);
+                return fragment;
             case 1:
-                return new BakeryFragment();
+                fragment = new BakeryFragment();
+                fragmentMap.put("Bakery", fragment);
+                return fragment;
             case 2:
-                return new SpecialFragment();
+                fragment = new SpecialFragment();
+                fragmentMap.put("Special", fragment);
+                return fragment;
             default:
-                return new BaveragesFragment();
+                throw new IllegalArgumentException("Invalid position: " + position);
         }
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 3; // Beverages, Bakery, Special
+    }
+
+    public Fragment getFragmentByCategory(String category) {
+        return fragmentMap.get(category);
     }
 }
