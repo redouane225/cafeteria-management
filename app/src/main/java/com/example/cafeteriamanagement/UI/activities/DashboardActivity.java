@@ -1,6 +1,8 @@
 package com.example.cafeteriamanagement.UI.activities;
 
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,7 @@ import com.example.cafeteriamanagement.UI.fragments.ProfileFragment;
 import com.example.cafeteriamanagement.UI.fragments.staffFragment;
 import com.example.cafeteriamanagement.databinding.ActivityDashboardBinding;
 import com.example.cafeteriamanagement.model.User;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DashboardActivity extends AppCompatActivity {
 

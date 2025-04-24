@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.cardview)
     implementation(libs.recyclerview)
     implementation(libs.glide)
+    implementation(libs.okhttp)
     annotationProcessor(libs.glide.compiler)
     androidTestImplementation(libs.espresso.core)
 

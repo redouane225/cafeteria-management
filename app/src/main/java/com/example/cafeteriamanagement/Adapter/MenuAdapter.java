@@ -1,12 +1,15 @@
 package com.example.cafeteriamanagement.Adapter;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cafeteriamanagement.R;
@@ -20,6 +23,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     private final List<MenuItem> menuItemList;
     private final List<MenuItem> menuItemListFull;
     private final OnItemClickListener onItemClickListener;
+    private static final String STATUS_AVAILABLE = "Available";
+    private static final String STATUS_UNAVAILABLE = "Unavailable";
+
 
     public interface OnItemClickListener {
         void onItemClick(MenuItem menuItem);
@@ -86,11 +92,13 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
         private final TextView itemNameTextView;
         private final TextView itemPriceTextView;
+        private final TextView availability;
 
         MenuViewHolder(@NonNull View itemView) {
             super(itemView);
             itemNameTextView = itemView.findViewById(R.id.item_name);
             itemPriceTextView = itemView.findViewById(R.id.item_price);
+            availability=itemView.findViewById(R.id.menu_availability);
             itemView.setOnClickListener(this);
         }
 
@@ -99,9 +107,18 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
                 itemNameTextView.setText(menuItem.getName());
                 // Dynamically add the dollar symbol next to the price
                 itemPriceTextView.setText(String.format("$%.2f", menuItem.getPrice()));
+                availability.setText(menuItem.getIsAvailable());
+                if (STATUS_AVAILABLE.equals(menuItem.getIsAvailable())) {
+                    availability.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.green));
+                } else {
+                    availability.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.red));
+                }
+
             } else {
                 itemNameTextView.setText("Unknown Item");
                 itemPriceTextView.setText("N/A");
+                availability.setText(STATUS_UNAVAILABLE);
+                availability.setTextColor(itemView.getContext().getResources().getColor(R.color.red));
             }
         }
 

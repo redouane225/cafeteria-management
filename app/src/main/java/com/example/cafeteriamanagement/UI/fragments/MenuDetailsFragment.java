@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.cafeteriamanagement.R;
 import com.example.cafeteriamanagement.databinding.FragmentMenuDetailsBinding;
 import com.example.cafeteriamanagement.model.MenuItem;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -43,6 +44,10 @@ public class MenuDetailsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentMenuDetailsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+
+        // Hide BottomNavigationView
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomnavigationview);
+        bottomNavigationView.setVisibility(View.GONE);
 
         // Set up Availability Spinner
         ArrayList<String> availabilityList = new ArrayList<>();
@@ -83,9 +88,28 @@ public class MenuDetailsFragment extends Fragment {
             }
         }
 
+        // Save menu item details button
         binding.btnSave.setOnClickListener(v -> saveMenuItem());
 
+        // Return back button
+        binding.btnBack.setOnClickListener(v -> {
+            if (getParentFragmentManager().getBackStackEntryCount() > 0) {
+                getParentFragmentManager().popBackStack(); // Go back to the previous fragment
+            }
+        });
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // Restore BottomNavigationView visibility
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomnavigationview);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+
+        binding = null; // Prevent memory leaks
     }
 
     private void saveMenuItem() {
