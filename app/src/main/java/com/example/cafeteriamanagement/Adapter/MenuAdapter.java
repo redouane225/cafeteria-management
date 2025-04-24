@@ -48,19 +48,38 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     public int getItemCount() {
         return menuItemList.size();
     }
+
     public void updateMenuItem(MenuItem updatedItem) {
         for (int i = 0; i < menuItemList.size(); i++) {
             if (menuItemList.get(i).getId() == updatedItem.getId()) {
                 menuItemList.set(i, updatedItem);
+                menuItemListFull.set(i, updatedItem); // Update full list
                 notifyItemChanged(i);
+                Log.d("MenuFlow", "Checking item with ID: " + menuItemList.get(i).getId());
+                Log.d("MenuFlow", "Updating item with ID: " + updatedItem.getId());
                 return;
             }
         }
         // Add new item if not found
         menuItemList.add(updatedItem);
+        menuItemListFull.add(updatedItem); // Add to full list
         notifyItemInserted(menuItemList.size() - 1);
-        Log.d("MenuFlow", "MenuAdapter updating item: " + updatedItem.getName());
+        Log.d("MenuFlow", "Item added: ID=" + updatedItem.getId() + ", Name=" + updatedItem.getName());
+    }
 
+    public void filter(String query) {
+        menuItemList.clear();
+        if (query.isEmpty()) {
+            menuItemList.addAll(menuItemListFull);
+        } else {
+            String lowerCaseQuery = query.toLowerCase();
+            for (MenuItem item : menuItemListFull) {
+                if (item.getName().toLowerCase().contains(lowerCaseQuery)) {
+                    menuItemList.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     class MenuViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -76,8 +95,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         }
 
         void bind(MenuItem menuItem) {
-            itemNameTextView.setText(menuItem.getName());
-            itemPriceTextView.setText(String.valueOf(menuItem.getPrice()));
+            if (menuItem != null) {
+                itemNameTextView.setText(menuItem.getName());
+                // Dynamically add the dollar symbol next to the price
+                itemPriceTextView.setText(String.format("$%.2f", menuItem.getPrice()));
+            } else {
+                itemNameTextView.setText("Unknown Item");
+                itemPriceTextView.setText("N/A");
+            }
         }
 
         @Override

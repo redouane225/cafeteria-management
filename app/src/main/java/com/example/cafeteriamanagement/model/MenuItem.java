@@ -1,14 +1,11 @@
 package com.example.cafeteriamanagement.model;
 
 import java.io.Serializable;
+import java.util.Random;
 
 public class MenuItem implements Serializable {
 
-    private static int idCounter = 1;
 
-    public static int getNextId() {
-        return idCounter++;
-    }
 
     private int id;
     private String name;

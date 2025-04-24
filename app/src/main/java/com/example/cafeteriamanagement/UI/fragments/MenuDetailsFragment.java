@@ -22,16 +22,16 @@ public class MenuDetailsFragment extends Fragment {
 
     private static final String ARG_MENU_ITEM = "menu_item";
     private static final String ARG_CATEGORY = "category";
+    private static final String[] CATEGORIES = {"Beverages", "Bakery", "Special"};
 
     private FragmentMenuDetailsBinding binding;
     private MenuItem menuItem;
 
-    //  UPDATED: Accept category as parameter
     public static MenuDetailsFragment newInstance(@Nullable MenuItem menuItem, @Nullable String category) {
         MenuDetailsFragment fragment = new MenuDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_MENU_ITEM, menuItem);
-        args.putString(ARG_CATEGORY, category); //  Correctly store the passed category
+        args.putString(ARG_CATEGORY, category);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,10 +41,6 @@ public class MenuDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-
-        Log.d("MenuFlow", "Received MenuItem in MenuDetailsFragment: ");
-
         binding = FragmentMenuDetailsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
@@ -62,10 +58,10 @@ public class MenuDetailsFragment extends Fragment {
         binding.menuAvailability.setAdapter(availabilityAdapter);
 
         // Set up Category Spinner
-        ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(
                 requireContext(),
-                R.array.menu_categories,
-                android.R.layout.simple_spinner_item
+                android.R.layout.simple_spinner_item,
+                CATEGORIES
         );
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.menuCategory.setAdapter(categoryAdapter);
@@ -75,17 +71,15 @@ public class MenuDetailsFragment extends Fragment {
             menuItem = (MenuItem) getArguments().getSerializable(ARG_MENU_ITEM);
 
             if (menuItem != null) {
-                // Editing existing item
                 binding.etitemname.setText(menuItem.getName());
                 binding.editemprice.setText(String.valueOf(menuItem.getPrice()));
                 binding.menuAvailability.setSelection(availabilityList.indexOf(menuItem.getIsAvailable()));
                 binding.menuCategory.setSelection(categoryAdapter.getPosition(menuItem.getCategorie()));
             } else {
-                // Adding new item: use category passed in arguments
-                String passedCategory = getArguments().getString(ARG_CATEGORY);
-                if (passedCategory != null) {
-                    binding.menuCategory.setSelection(categoryAdapter.getPosition(passedCategory));
-                }
+                // Adding new item
+                String passedCategory = getArguments().getString(ARG_CATEGORY, "Beverages"); // Default category
+                binding.menuCategory.setSelection(categoryAdapter.getPosition(passedCategory));
+                binding.menuAvailability.setSelection(0); // Default to "Available"
             }
         }
 
@@ -100,10 +94,7 @@ public class MenuDetailsFragment extends Fragment {
         String availability = binding.menuAvailability.getSelectedItem().toString();
         String category = binding.menuCategory.getSelectedItem().toString();
 
-        Log.d("MenuFlow", "Save clicked. Returning updated MenuItem: " + menuItem);
-
-
-        if (itemName.isEmpty() || priceText.isEmpty() || category == null) {
+        if (itemName.isEmpty() || priceText.isEmpty() || category.isEmpty()) {
             Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -116,9 +107,8 @@ public class MenuDetailsFragment extends Fragment {
             return;
         }
 
-        // Create or update the menu item
         if (menuItem == null) {
-            int generatedId = MenuItem.getNextId();
+            int generatedId = (int) System.currentTimeMillis();
             menuItem = new MenuItem(generatedId, itemName, itemPrice, availability, category);
         } else {
             menuItem.setName(itemName);
@@ -127,14 +117,11 @@ public class MenuDetailsFragment extends Fragment {
             menuItem.setCategorie(category);
         }
 
-        // Pass result back to MenuFragment
         Bundle result = new Bundle();
         result.putSerializable("menu_item", menuItem);
         getParentFragmentManager().setFragmentResult("menu_item_request", result);
 
-        Log.d("MenuFlow", "Sending result back using setFragmentResult()" + result);
-
-
+        Log.d("MenuDetailsFragment", "Result sent: " + menuItem);
         requireActivity().getSupportFragmentManager().popBackStack();
     }
 }

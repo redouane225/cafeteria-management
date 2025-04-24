@@ -47,6 +47,7 @@
             android:layout_height="wrap_content"
             android:text="$5.00"
             android:textSize="18sp"
+            android:textColor="@color/black"
             android:paddingBottom="4dp" />
 
         <!-- Availability of the Item -->

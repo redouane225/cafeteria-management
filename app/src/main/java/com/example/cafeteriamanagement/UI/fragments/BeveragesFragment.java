@@ -19,11 +19,12 @@ import com.example.cafeteriamanagement.model.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BeveragesFragment extends Fragment implements  MenuCategoryInterface{
+public class BeveragesFragment extends Fragment implements MenuCategoryInterface {
 
     private FragmentBaveragesBinding binding;
     private MenuAdapter menuAdapter;
     private final List<MenuItem> menuItemList = new ArrayList<>();
+    private static final String CATEGORY = "Beverages";
 
     @Nullable
     @Override
@@ -33,45 +34,51 @@ public class BeveragesFragment extends Fragment implements  MenuCategoryInterfac
 
         binding = FragmentBaveragesBinding.inflate(inflater, container, false);
 
+        // Set up RecyclerView with GridLayoutManager
         binding.recyclerBaverages.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        populateDummyData();
+        // Populate dummy data for testing
+        if (menuItemList.isEmpty()) {
+            populateDummyData();
+        }
 
+
+        // Set up MenuAdapter
         menuAdapter = new MenuAdapter(menuItemList, this::openMenuDetailsFragment);
         binding.recyclerBaverages.setAdapter(menuAdapter);
 
-
-
         return binding.getRoot();
     }
-    public void  updateCategoryMenuItem(MenuItem updatedItem) {
-        if (menuAdapter != null) {
-            menuAdapter.updateMenuItem(updatedItem);
-            Log.d("MenuFlow", "BeveragesFragment updated with: " + updatedItem.getName());
-        } else {
-            Log.d("MenuFlow", "menuAdapter is null in BeveragesFragment.");
+
+    @Override
+    public void updateCategoryMenuItem(MenuItem updatedItem) {
+        if (menuAdapter == null) {
+            Log.e("MenuFlow", "MenuAdapter is not initialized yet in BeveragesFragment.");
+            return;
         }
+        menuAdapter.updateMenuItem(updatedItem);
+        Log.d("MenuFlow", "BeveragesFragment updated with: " + updatedItem.getName());
     }
 
     private void populateDummyData() {
         menuItemList.clear();
-        menuItemList.add(new MenuItem(10, "Cappuccino", 3.49, "Available", "Beverages"));
-        menuItemList.add(new MenuItem(11, "Latte", 3.99, "Available", "Beverages"));
-        menuItemList.add(new MenuItem(12, "Iced Tea", 2.49, "Unavailable", "Beverages"));
+        menuItemList.add(new MenuItem(10, "Cappuccino", 3.49, "Available", CATEGORY));
+        menuItemList.add(new MenuItem(11, "Latte", 3.99, "Available", CATEGORY));
+        menuItemList.add(new MenuItem(12, "Iced Tea", 2.49, "Unavailable", CATEGORY));
     }
 
-    // Update this method to pass both the menuItem and the category
     private void openMenuDetailsFragment(MenuItem menuItem) {
-        MenuDetailsFragment menuDetailsFragment = MenuDetailsFragment.newInstance(menuItem, "Beverages"); // Pass category
-        getParentFragmentManager().beginTransaction()
+        MenuDetailsFragment menuDetailsFragment = MenuDetailsFragment.newInstance(menuItem, CATEGORY);
+        requireActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, menuDetailsFragment)
                 .addToBackStack(null)
                 .commit();
     }
 
-
     public void refreshData() {
-        menuAdapter.notifyDataSetChanged();
+        if (menuAdapter != null) {
+            menuAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -79,6 +86,4 @@ public class BeveragesFragment extends Fragment implements  MenuCategoryInterfac
         super.onDestroyView();
         binding = null; // Avoid memory leaks
     }
-
-
 }

@@ -21,9 +21,10 @@ import java.util.List;
 
 public class BakeryFragment extends Fragment implements MenuCategoryInterface {
 
-    private FragmentBakeryBinding binding; // View binding
+    private FragmentBakeryBinding binding;
     private MenuAdapter menuAdapter;
     private final List<MenuItem> menuItemList = new ArrayList<>();
+    private static final String CATEGORY = "Bakery";
 
     @Nullable
     @Override
@@ -32,53 +33,60 @@ public class BakeryFragment extends Fragment implements MenuCategoryInterface {
                              @Nullable Bundle savedInstanceState) {
 
         binding = FragmentBakeryBinding.inflate(inflater, container, false);
-        View view = binding.getRoot(); // Get root view
 
-        binding.recyclerBakery.setLayoutManager(new GridLayoutManager(getContext(), 2)); // Using binding to access recyclerView
+        // Set up RecyclerView with GridLayoutManager
+        binding.recyclerBakery.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        populateDummyData();
-
-        menuAdapter = new MenuAdapter(menuItemList, this::openMenuDetailsFragment);
-        binding.recyclerBakery.setAdapter(menuAdapter); // Set adapter
-
-        // Fragment ResultListener using Serializable
-
-
-        return view;
-    }
-    public void  updateCategoryMenuItem(MenuItem updatedItem) {
-        if (menuAdapter != null) {
-            menuAdapter.updateMenuItem(updatedItem);
-            Log.d("MenuFlow", "BakeryFragment updated with: " + updatedItem.getName());
-        } else {
-            Log.d("MenuFlow", "menuAdapter is null in BakeryFragment.");
+        // Populate dummy data for testing
+        if (menuItemList.isEmpty()) {
+            populateDummyData();
         }
+
+
+        // Set up MenuAdapter
+        menuAdapter = new MenuAdapter(menuItemList, this::openMenuDetailsFragment);
+        binding.recyclerBakery.setAdapter(menuAdapter);
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void updateCategoryMenuItem(MenuItem updatedItem) {
+        if (menuAdapter == null) {
+            Log.e("MenuFlow", "MenuAdapter is not initialized yet in BakeryFragment.");
+            return;
+        }
+        menuAdapter.updateMenuItem(updatedItem);
+        Log.d("MenuFlow", "BakeryFragment updated with: " + updatedItem.getName());
     }
 
     private void populateDummyData() {
         menuItemList.clear();
-        menuItemList.add(new MenuItem(1, "Croissant", 2.99, "Available", "Bakery"));
-        menuItemList.add(new MenuItem(2, "Donut", 1.49, "Available", "Bakery"));
-        menuItemList.add(new MenuItem(3, "Muffin", 2.79, "Unavailable", "Bakery"));
-        menuItemList.add(new MenuItem(4, "Harcha", 2.00, "Unavailable", "Bakery"));
-        menuItemList.add(new MenuItem(5, "Kaek", 3.00, "Available", "Bakery"));
-        menuItemList.add(new MenuItem(6, "Moula", 9.99, "Available", "Bakery"));
+        menuItemList.add(new MenuItem(1, "Croissant", 2.99, "Available", CATEGORY));
+        menuItemList.add(new MenuItem(2, "Donut", 1.49, "Available", CATEGORY));
+        menuItemList.add(new MenuItem(3, "Muffin", 2.79, "Unavailable", CATEGORY));
+        menuItemList.add(new MenuItem(4, "Harcha", 2.00, "Unavailable", CATEGORY));
+        menuItemList.add(new MenuItem(5, "Kaek", 3.00, "Available", CATEGORY));
+        menuItemList.add(new MenuItem(6, "Moula", 9.99, "Available", CATEGORY));
     }
 
-    // Update this method to pass both the menuItem and the category
     private void openMenuDetailsFragment(MenuItem menuItem) {
-        MenuDetailsFragment menuDetailsFragment = MenuDetailsFragment.newInstance(menuItem, "Bakery"); // Pass category
-        getParentFragmentManager().beginTransaction()
+        MenuDetailsFragment menuDetailsFragment = MenuDetailsFragment.newInstance(menuItem, CATEGORY);
+        requireActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, menuDetailsFragment)
                 .addToBackStack(null)
                 .commit();
     }
 
-
     public void refreshData() {
-        menuAdapter.notifyDataSetChanged();
+        if (menuAdapter != null) {
+            menuAdapter.notifyDataSetChanged();
+        }
     }
 
-
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null; // Avoid memory leaks
+    }
 }
