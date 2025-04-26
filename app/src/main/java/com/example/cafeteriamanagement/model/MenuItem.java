@@ -1,7 +1,6 @@
 package com.example.cafeteriamanagement.model;
 
 import java.io.Serializable;
-import java.util.Random;
 
 public class MenuItem implements Serializable {
 
@@ -11,7 +10,7 @@ public class MenuItem implements Serializable {
     private String name;
     private double price;
     private String isAvailable;
-    private String categorie;
+    private String category;
 
     // Constructor
     public MenuItem(int id, String name, double price, String isAvailable, String categorie) {
@@ -19,7 +18,7 @@ public class MenuItem implements Serializable {
         this.name = name;
         this.price = price;
         this.isAvailable = isAvailable;
-        this.categorie = categorie;
+        this.category = categorie;
     }
     public MenuItem(){}
 
@@ -56,12 +55,12 @@ public class MenuItem implements Serializable {
         this.isAvailable = isAvailable;
     }
 
-    public String getCategorie() {
-        return categorie;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategorie(String categorie) {
-        this.categorie = categorie;
+    public void setCategory(String category) {
+        this.category = category;
     }
     @Override
     public String toString() {
@@ -70,7 +69,7 @@ public class MenuItem implements Serializable {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", isAvailable='" + isAvailable + '\'' +
-                ", categorie='" + categorie + '\'' +
+                ", category='" + category + '\'' +
                 '}';
     }
 

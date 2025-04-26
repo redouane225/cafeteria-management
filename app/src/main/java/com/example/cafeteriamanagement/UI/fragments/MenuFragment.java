@@ -54,7 +54,7 @@ public class MenuFragment extends Fragment {
 
             Log.d("MenuFlow", "Add button clicked. Preparing new MenuItem for category: " + category);
 
-            newItem.setCategorie(category);
+            newItem.setCategory(category);
             if (getActivity() != null && getActivity().findViewById(R.id.fragment_container) != null) {
                 MenuDetailsFragment menuDetailsFragment = MenuDetailsFragment.newInstance(newItem, category);
                 requireActivity().getSupportFragmentManager().beginTransaction()
@@ -72,7 +72,7 @@ public class MenuFragment extends Fragment {
             MenuItem updatedItem = (MenuItem) bundle.getSerializable("menu_item");
 
             if (updatedItem != null) {
-                String category = updatedItem.getCategorie();
+                String category = updatedItem.getCategory();
                 Log.d("MenuFlow", "MenuFragment received result for category: " + category);
 
                 int position = -1;

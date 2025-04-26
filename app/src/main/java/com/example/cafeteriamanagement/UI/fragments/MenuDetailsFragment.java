@@ -79,7 +79,7 @@ public class MenuDetailsFragment extends Fragment {
                 binding.etitemname.setText(menuItem.getName());
                 binding.editemprice.setText(String.valueOf(menuItem.getPrice()));
                 binding.menuAvailability.setSelection(availabilityList.indexOf(menuItem.getIsAvailable()));
-                binding.menuCategory.setSelection(categoryAdapter.getPosition(menuItem.getCategorie()));
+                binding.menuCategory.setSelection(categoryAdapter.getPosition(menuItem.getCategory()));
             } else {
                 // Adding new item
                 String passedCategory = getArguments().getString(ARG_CATEGORY, "Beverages"); // Default category
@@ -138,7 +138,7 @@ public class MenuDetailsFragment extends Fragment {
             menuItem.setName(itemName);
             menuItem.setPrice(itemPrice);
             menuItem.setIsAvailable(availability);
-            menuItem.setCategorie(category);
+            menuItem.setCategory(category);
         }
 
         Bundle result = new Bundle();
