@@ -26,6 +26,18 @@ public class SpecialFragment extends Fragment implements MenuCategoryInterface {
     private final List<MenuItem> menuItemList = new ArrayList<>();
     private static final String CATEGORY = "Special";
 
+    private static final String ARG_MENU_ITEMS = "menu_items";
+
+    public static SpecialFragment newInstance(List<MenuItem> menuItems) {
+        SpecialFragment fragment = new SpecialFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_MENU_ITEMS, (ArrayList<MenuItem>) menuItems);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -37,24 +49,38 @@ public class SpecialFragment extends Fragment implements MenuCategoryInterface {
         // Set up RecyclerView with GridLayoutManager
         binding.recyclerSpecial.setLayoutManager(new GridLayoutManager(requireContext(), 2));
 
-        // Populate dummy data for testing
-        if (menuItemList.isEmpty()) {
-            populateDummyData();
-        }
-
-
         // Set up MenuAdapter
         menuAdapter = new MenuAdapter(menuItemList, this::openMenuDetailsFragment);
         binding.recyclerSpecial.setAdapter(menuAdapter);
 
+
         return binding.getRoot();
     }
 
-    private void populateDummyData() {
+    @Override
+    public void setMenuItems(List<MenuItem> menuItems) {
+        // Update the menu items list and refresh the adapter
         menuItemList.clear();
-        menuItemList.add(new MenuItem(20, "Seasonal Cake", 5.49, "Available", CATEGORY));
-        menuItemList.add(new MenuItem(21, "Holiday Pie", 4.99, "Available", CATEGORY));
-        menuItemList.add(new MenuItem(22, "Chef’s Surprise", 6.99, "Unavailable", CATEGORY));
+        if (menuItems != null && !menuItems.isEmpty()) {
+            menuItemList.addAll(menuItems);
+            Log.d("MenuFlow", "SpecialFragment received " + menuItems.size() + " items.");
+        } else {
+            Log.d("MenuFlow", "SpecialFragment received an empty list of items.");
+        }
+        refreshData();
+
+    }
+
+    @Override
+    public void updateCategoryMenuItem(MenuItem updatedItem) {
+        if (menuAdapter == null) {
+            Log.e("MenuFlow", "MenuAdapter is not initialized yet in SpecialFragment.");
+            return;
+        }
+
+        // Update a specific menu item if it exists
+        menuAdapter.updateMenuItem(updatedItem);
+        Log.d("MenuFlow", "SpecialFragment updated with: " + updatedItem.getName());
     }
 
     private void openMenuDetailsFragment(MenuItem menuItem) {
@@ -67,19 +93,11 @@ public class SpecialFragment extends Fragment implements MenuCategoryInterface {
 
     public void refreshData() {
         if (menuAdapter != null) {
+            // Notify RecyclerView adapter to refresh the UI
             menuAdapter.notifyDataSetChanged();
         }
     }
 
-    @Override
-    public void updateCategoryMenuItem(MenuItem updatedItem) {
-        if (menuAdapter == null) {
-            Log.e("MenuFlow", "MenuAdapter is not initialized yet in SpecialFragment.");
-            return;
-        }
-        menuAdapter.updateMenuItem(updatedItem);
-        Log.d("MenuFlow", "SpecialFragment updated with: " + updatedItem.getName());
-    }
 
     @Override
     public void onDestroyView() {

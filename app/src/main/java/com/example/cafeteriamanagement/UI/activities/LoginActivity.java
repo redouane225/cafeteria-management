@@ -47,11 +47,22 @@ public class LoginActivity extends AppCompatActivity {
                     user.setUsername(username); // Set username
                     user.setRole(role);         // Set role returned by the backend
 
-                    // Pass the User object to the DashboardActivity
-                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                    intent.putExtra("user", user);
-                    startActivity(intent);
-                    finish();
+
+                    if(user.getRole().equals("admin")){
+                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        intent.putExtra("user", user);
+                        startActivity(intent);
+                        finish();
+                    }
+                     else if (user.getRole().equals("staff")) {
+                        Intent intent = new Intent(LoginActivity.this, StaffDashboardActivity.class);
+                        intent.putExtra("user", user);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Unknown role, cannot navigate", Toast.LENGTH_SHORT).show();                    }
+
+
                 });
             }
 

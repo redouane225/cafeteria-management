@@ -1,11 +1,9 @@
 package com.example.cafeteriamanagement.Adapter;
 
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,19 +18,19 @@ import java.util.List;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
 
-    private final List<MenuItem> menuItemList;
-    private final List<MenuItem> menuItemListFull;
+    private final List<MenuItem> menuItemList;        // Reference to fragment's list
+    private final List<MenuItem> menuItemListFull;    // For filtering
     private final OnItemClickListener onItemClickListener;
+
     private static final String STATUS_AVAILABLE = "Available";
     private static final String STATUS_UNAVAILABLE = "Unavailable";
-
 
     public interface OnItemClickListener {
         void onItemClick(MenuItem menuItem);
     }
 
     public MenuAdapter(List<MenuItem> menuItemList, OnItemClickListener onItemClickListener) {
-        this.menuItemList = new ArrayList<>(menuItemList);
+        this.menuItemList = menuItemList;
         this.menuItemListFull = new ArrayList<>(menuItemList);
         this.onItemClickListener = onItemClickListener;
     }
@@ -56,21 +54,22 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     }
 
     public void updateMenuItem(MenuItem updatedItem) {
-        for (int i = 0; i < menuItemList.size(); i++) {
-            if (menuItemList.get(i).getId() == updatedItem.getId()) {
-                menuItemList.set(i, updatedItem);
-                menuItemListFull.set(i, updatedItem); // Update full list
-                notifyItemChanged(i);
-                Log.d("MenuFlow", "Checking item with ID: " + menuItemList.get(i).getId());
-                Log.d("MenuFlow", "Updating item with ID: " + updatedItem.getId());
-                return;
+        synchronized (menuItemList) {
+            for (int i = 0; i < menuItemList.size(); i++) {
+                if (menuItemList.get(i).getId() == updatedItem.getId()) {
+                    menuItemList.set(i, updatedItem);
+                    menuItemListFull.set(i, updatedItem);
+                    notifyItemChanged(i);
+                    Log.d("MenuFlow", "Updated item with ID: " + updatedItem.getId());
+                    return;
+                }
             }
+            // Item not found, add new
+            menuItemList.add(updatedItem);
+            menuItemListFull.add(updatedItem);
+            notifyItemInserted(menuItemList.size() - 1);
+            Log.d("MenuFlow", "Added new item with ID: " + updatedItem.getId());
         }
-        // Add new item if not found
-        menuItemList.add(updatedItem);
-        menuItemListFull.add(updatedItem); // Add to full list
-        notifyItemInserted(menuItemList.size() - 1);
-        Log.d("MenuFlow", "Item added: ID=" + updatedItem.getId() + ", Name=" + updatedItem.getName());
     }
 
     public void filter(String query) {
@@ -98,27 +97,26 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
             super(itemView);
             itemNameTextView = itemView.findViewById(R.id.item_name);
             itemPriceTextView = itemView.findViewById(R.id.item_price);
-            availability=itemView.findViewById(R.id.menu_availability);
+            availability = itemView.findViewById(R.id.menu_availability);
             itemView.setOnClickListener(this);
         }
 
         void bind(MenuItem menuItem) {
             if (menuItem != null) {
                 itemNameTextView.setText(menuItem.getName());
-                // Dynamically add the dollar symbol next to the price
                 itemPriceTextView.setText(String.format("$%.2f", menuItem.getPrice()));
                 availability.setText(menuItem.getIsAvailable());
-                if (STATUS_AVAILABLE.equals(menuItem.getIsAvailable())) {
+
+                if (STATUS_AVAILABLE.equalsIgnoreCase(menuItem.getIsAvailable())) {
                     availability.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.green));
                 } else {
                     availability.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.red));
                 }
-
             } else {
-                itemNameTextView.setText("Unknown Item");
+                itemNameTextView.setText("Unknown");
                 itemPriceTextView.setText("N/A");
-                availability.setText(STATUS_UNAVAILABLE);
-                availability.setTextColor(itemView.getContext().getResources().getColor(R.color.red));
+                availability.setText("Unavailable");
+                availability.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.red));
             }
         }
 

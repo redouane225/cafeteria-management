@@ -26,6 +26,20 @@ public class BakeryFragment extends Fragment implements MenuCategoryInterface {
     private final List<MenuItem> menuItemList = new ArrayList<>();
     private static final String CATEGORY = "Bakery";
 
+    private static final String ARG_MENU_ITEMS = "menu_items";
+
+    public static BakeryFragment newInstance(List<MenuItem> menuItems) {
+        BakeryFragment fragment = new BakeryFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_MENU_ITEMS, (ArrayList<MenuItem>) menuItems);
+        fragment.setArguments(args);
+        Log.d("Menuflow", "BeveragesFragment initialized with " + menuItems.size() + " items");
+
+        return fragment;
+    }
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -37,17 +51,25 @@ public class BakeryFragment extends Fragment implements MenuCategoryInterface {
         // Set up RecyclerView with GridLayoutManager
         binding.recyclerBakery.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        // Populate dummy data for testing
-        if (menuItemList.isEmpty()) {
-            populateDummyData();
-        }
-
-
         // Set up MenuAdapter
         menuAdapter = new MenuAdapter(menuItemList, this::openMenuDetailsFragment);
         binding.recyclerBakery.setAdapter(menuAdapter);
 
+
         return binding.getRoot();
+    }
+
+    @Override
+    public void setMenuItems(List<MenuItem> menuItems) {
+        // Update the menu items list and refresh the adapter
+        menuItemList.clear();
+        if (menuItems != null && !menuItems.isEmpty()) {
+            menuItemList.addAll(menuItems);
+            Log.d("MenuFlow", "BakeryFragment received " + menuItems.size() + " items.");
+        } else {
+            Log.d("MenuFlow", "BakeryFragment received an empty list of items.");
+        }
+        refreshData();
     }
 
     @Override
@@ -56,18 +78,10 @@ public class BakeryFragment extends Fragment implements MenuCategoryInterface {
             Log.e("MenuFlow", "MenuAdapter is not initialized yet in BakeryFragment.");
             return;
         }
+
+        // Update a specific menu item if it exists
         menuAdapter.updateMenuItem(updatedItem);
         Log.d("MenuFlow", "BakeryFragment updated with: " + updatedItem.getName());
-    }
-
-    private void populateDummyData() {
-        menuItemList.clear();
-        menuItemList.add(new MenuItem(1, "Croissant", 2.99, "Available", CATEGORY));
-        menuItemList.add(new MenuItem(2, "Donut", 1.49, "Available", CATEGORY));
-        menuItemList.add(new MenuItem(3, "Muffin", 2.79, "Unavailable", CATEGORY));
-        menuItemList.add(new MenuItem(4, "Harcha", 2.00, "Unavailable", CATEGORY));
-        menuItemList.add(new MenuItem(5, "Kaek", 3.00, "Available", CATEGORY));
-        menuItemList.add(new MenuItem(6, "Moula", 9.99, "Available", CATEGORY));
     }
 
     private void openMenuDetailsFragment(MenuItem menuItem) {
@@ -80,6 +94,7 @@ public class BakeryFragment extends Fragment implements MenuCategoryInterface {
 
     public void refreshData() {
         if (menuAdapter != null) {
+            // Notify RecyclerView adapter to refresh the UI
             menuAdapter.notifyDataSetChanged();
         }
     }

@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.cafeteriamanagement.Network.ApiCallback;
+import com.example.cafeteriamanagement.Network.ApiService;
 import com.example.cafeteriamanagement.R;
 import com.example.cafeteriamanagement.databinding.FragmentMenuDetailsBinding;
 import com.example.cafeteriamanagement.model.MenuItem;
@@ -131,21 +133,51 @@ public class MenuDetailsFragment extends Fragment {
             return;
         }
 
-        if (menuItem == null) {
-            int generatedId = (int) System.currentTimeMillis();
-            menuItem = new MenuItem(generatedId, itemName, itemPrice, availability, category);
+
+
+        // Determine whether to create or update
+        if (menuItem.getName() == null || menuItem.getName().isEmpty()) {
+            // Create new menu item
+            menuItem = new MenuItem(0, itemName, itemPrice, availability, category);
+            ApiService.addMenuItem(menuItem, new ApiCallback<String>() {
+                @Override
+                public void onSuccess(String responseMessage) {
+                    Toast.makeText(requireContext(), "Menu item created successfully: " + responseMessage, Toast.LENGTH_SHORT).show();
+                    navigateBack();
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Toast.makeText(requireContext(), "Failed to create menu item: " + errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
+            // Update existing menu item
             menuItem.setName(itemName);
             menuItem.setPrice(itemPrice);
             menuItem.setIsAvailable(availability);
             menuItem.setCategory(category);
+
+            ApiService.updateMenuItem(menuItem, new ApiCallback<String>() { // Assuming updateMenuItem still expects ApiCallback<MenuItem>
+                @Override
+                public void onSuccess(String responseMessage) {
+                    Toast.makeText(requireContext(), "Menu item updated successfully", Toast.LENGTH_SHORT).show();
+                    navigateBack();
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Toast.makeText(requireContext(), "Failed to update menu item: " + errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
-
-        Bundle result = new Bundle();
-        result.putSerializable("menu_item", menuItem);
-        getParentFragmentManager().setFragmentResult("menu_item_request", result);
-
-        Log.d("MenuDetailsFragment", "Result sent: " + menuItem);
-        requireActivity().getSupportFragmentManager().popBackStack();
     }
+
+    private void navigateBack() {
+        if (getParentFragmentManager().getBackStackEntryCount() > 0) {
+            getParentFragmentManager().popBackStack(); // Go back to the previous fragment
+        }
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package com.example.cafeteriamanagement.Network;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.example.cafeteriamanagement.model.MenuItem;
@@ -23,16 +25,18 @@ import okhttp3.Response;
 public class ApiService {
 
     private static final String TAG = "ApiService";
+    private static void runOnUiThread(Runnable task) {
+        new Handler(Looper.getMainLooper()).post(task);
+    }
 
     // MediaType for JSON
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
-    // log in user
+    // Log in user
     public static void login(String username, String password, ApiCallback<String> callback) {
         OkHttpClient client = ApiClient.getClient();
 
         try {
-            // Create JSON body for the request
             JSONObject loginJson = new JSONObject();
             loginJson.put("username", username);
             loginJson.put("password", password);
@@ -93,17 +97,20 @@ public class ApiService {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "Failed to fetch menu items", e);
-                callback.onError(e.getMessage());
+                runOnUiThread(() -> callback.onError(e.getMessage()));
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         String responseBody = response.body().string();
-                        JSONArray menuItemsArray = new JSONArray(responseBody);
+                        JSONObject menuObject = new JSONObject(responseBody);
+                        JSONArray menuItemsArray = menuObject.getJSONArray("data");
                         List<MenuItem> menuItems = new ArrayList<>();
 
+                        Log.d(TAG, responseBody);
                         // Parse JSON array into Java objects
                         for (int i = 0; i < menuItemsArray.length(); i++) {
                             JSONObject menuItemJson = menuItemsArray.getJSONObject(i);
@@ -113,18 +120,26 @@ public class ApiService {
                                     menuItemJson.getDouble("price"),
                                     menuItemJson.getString("availability"),
                                     menuItemJson.getString("category")
+
                             );
                             menuItems.add(menuItem);
+                            Log.d(TAG, "Parsed menu items: " + menuItems.size());
                         }
 
-                        callback.onSuccess(menuItems);
+                            for (MenuItem item : menuItems) {
+                                Log.d(TAG, "Item: " + item.getName() + ", Category: " + item.getCategory());
+                            }
+
+
+
+                        runOnUiThread(() -> callback.onSuccess(menuItems));
 
                     } catch (JSONException e) {
                         Log.e(TAG, "JSON parsing error", e);
-                        callback.onError("Failed to parse response");
+                        runOnUiThread(() -> callback.onError("Failed to parse response"));
                     }
                 } else {
-                    callback.onError("Failed to fetch menu items: " + response.message());
+                    runOnUiThread(() -> callback.onError("Failed to fetch menu items: " + response.message()));
                 }
             }
         });
@@ -135,7 +150,6 @@ public class ApiService {
         OkHttpClient client = ApiClient.getClient();
 
         try {
-            // Create JSON body for the request
             JSONObject menuItemJson = new JSONObject();
             menuItemJson.put("id", menuItem.getId());
             menuItemJson.put("name", menuItem.getName());
@@ -154,7 +168,7 @@ public class ApiService {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Log.e(TAG, "Failed to update menu item", e);
-                    callback.onError(e.getMessage());
+                    runOnUiThread(() -> callback.onError(e.getMessage()));
                 }
 
                 @Override
@@ -164,20 +178,20 @@ public class ApiService {
                             String responseBody = response.body().string();
                             JSONObject jsonResponse = new JSONObject(responseBody);
                             String message = jsonResponse.optString("message", "Menu item updated successfully");
-                            callback.onSuccess(message);
+                            runOnUiThread(() -> callback.onSuccess(message));
                         } catch (JSONException e) {
                             Log.e(TAG, "JSON parsing error", e);
-                            callback.onError("Failed to parse response");
+                            runOnUiThread(() -> callback.onError("Failed to parse response"));
                         }
                     } else {
-                        callback.onError("Failed to update menu item: " + response.message());
+                        runOnUiThread(() -> callback.onError("Failed to update menu item: " + response.message()));
                     }
                 }
             });
 
         } catch (JSONException e) {
             Log.e(TAG, "Failed to create JSON body", e);
-            callback.onError("Failed to create request body");
+            runOnUiThread(() -> callback.onError("Failed to create request body"));
         }
     }
 
@@ -186,7 +200,6 @@ public class ApiService {
         OkHttpClient client = ApiClient.getClient();
 
         try {
-            // Create JSON body for the request
             JSONObject menuItemJson = new JSONObject();
             menuItemJson.put("name", menuItem.getName());
             menuItemJson.put("price", menuItem.getPrice());
@@ -204,7 +217,7 @@ public class ApiService {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Log.e(TAG, "Failed to add menu item", e);
-                    callback.onError(e.getMessage());
+                    runOnUiThread(() -> callback.onError(e.getMessage()));
                 }
 
                 @Override
@@ -214,20 +227,19 @@ public class ApiService {
                             String responseBody = response.body().string();
                             JSONObject jsonResponse = new JSONObject(responseBody);
                             String message = jsonResponse.optString("message", "Menu item added successfully");
-                            callback.onSuccess(message);
+                            runOnUiThread(() -> callback.onSuccess(message)); // Ensure callback runs on main thread
                         } catch (JSONException e) {
                             Log.e(TAG, "JSON parsing error", e);
-                            callback.onError("Failed to parse response");
+                            runOnUiThread(() -> callback.onError("Failed to parse response"));
                         }
                     } else {
-                        callback.onError("Failed to add menu item: " + response.message());
+                        runOnUiThread(() -> callback.onError("Failed to add menu item: " + response.message()));
                     }
                 }
             });
 
         } catch (JSONException e) {
             Log.e(TAG, "Failed to create JSON body", e);
-            callback.onError("Failed to create request body");
-        }
+            runOnUiThread(() -> callback.onError("Failed to create request body"));        }
     }
 }

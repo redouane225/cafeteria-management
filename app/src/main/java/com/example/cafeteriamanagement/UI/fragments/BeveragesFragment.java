@@ -26,6 +26,17 @@ public class BeveragesFragment extends Fragment implements MenuCategoryInterface
     private final List<MenuItem> menuItemList = new ArrayList<>();
     private static final String CATEGORY = "Beverages";
 
+    private static final String ARG_MENU_ITEMS = "menu_items";
+
+    public static BeveragesFragment newInstance(List<MenuItem> menuItems) {
+        BeveragesFragment fragment = new BeveragesFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_MENU_ITEMS, (ArrayList<MenuItem>) menuItems);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -34,20 +45,30 @@ public class BeveragesFragment extends Fragment implements MenuCategoryInterface
 
         binding = FragmentBaveragesBinding.inflate(inflater, container, false);
 
+
+
         // Set up RecyclerView with GridLayoutManager
         binding.recyclerBaverages.setLayoutManager(new GridLayoutManager(getContext(), 2));
-
-        // Populate dummy data for testing
-        if (menuItemList.isEmpty()) {
-            populateDummyData();
-        }
-
-
         // Set up MenuAdapter
         menuAdapter = new MenuAdapter(menuItemList, this::openMenuDetailsFragment);
         binding.recyclerBaverages.setAdapter(menuAdapter);
 
+
         return binding.getRoot();
+    }
+
+    @Override
+    public void setMenuItems(List<MenuItem> menuItems) {
+        // Update the menu items list and refresh the adapter
+        menuItemList.clear();
+        if (menuItems != null && !menuItems.isEmpty()) {
+            menuItemList.addAll(menuItems);
+            Log.d("MenuFlow", "BeveragesFragment received " + menuItems.size() + " items.");
+        } else {
+            Log.d("MenuFlow", "BeveragesFragment received an empty list of items.");
+        }
+        refreshData();
+
     }
 
     @Override
@@ -56,15 +77,10 @@ public class BeveragesFragment extends Fragment implements MenuCategoryInterface
             Log.e("MenuFlow", "MenuAdapter is not initialized yet in BeveragesFragment.");
             return;
         }
+
+        // Update a specific menu item if it exists
         menuAdapter.updateMenuItem(updatedItem);
         Log.d("MenuFlow", "BeveragesFragment updated with: " + updatedItem.getName());
-    }
-
-    private void populateDummyData() {
-        menuItemList.clear();
-        menuItemList.add(new MenuItem(10, "Cappuccino", 3.49, "Available", CATEGORY));
-        menuItemList.add(new MenuItem(11, "Latte", 3.99, "Available", CATEGORY));
-        menuItemList.add(new MenuItem(12, "Iced Tea", 2.49, "Unavailable", CATEGORY));
     }
 
     private void openMenuDetailsFragment(MenuItem menuItem) {
@@ -80,6 +96,7 @@ public class BeveragesFragment extends Fragment implements MenuCategoryInterface
             menuAdapter.notifyDataSetChanged();
         }
     }
+
 
     @Override
     public void onDestroyView() {

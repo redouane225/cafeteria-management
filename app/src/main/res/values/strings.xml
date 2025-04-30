@@ -49,6 +49,9 @@
     <string name="bakery">display bakery items of menu</string>
     <string name="baverages">display baverages of menu</string>
     <string name="special_cafeteria">special menu item of the cafeteria</string>
+    <string name="unknown_item">"unknown menu item "</string>
+    <string name="not_available">"unavailable price format of menu item "</string>
+    <string name="unavailable">"unavailable menu item "</string>
     <string-array name="availability_options">
         <item>Available</item>
         <item>Unavailable</item>
