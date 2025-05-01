@@ -2,7 +2,7 @@
     android:shape="rectangle">
 
     <!-- Background color -->
-    <solid android:color="@color/very_light_beige" /> <!-- You can change this to any color you prefer -->
+    <solid android:color="@color/white" /> <!-- You can change this to any color you prefer -->
 
     <!-- Optional rounded corners -->
     <corners android:radius="14dp" />

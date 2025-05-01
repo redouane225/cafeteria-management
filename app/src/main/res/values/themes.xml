@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.CafeteriaManagement" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/muted_brown</item>
-        <item name="android:navigationBarColor">@color/muted_brown</item>
+        <item name="android:statusBarColor">@color/brown</item>
+        <item name="android:navigationBarColor">@color/white</item>
 
     </style>
 

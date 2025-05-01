@@ -19,7 +19,7 @@
         android:textStyle="bold"
         android:fontFamily="@font/lato_bold"
         android:layout_gravity="center"
-        android:textColor="@color/deep_brown"
+        android:textColor="@color/dark_brown"
         android:paddingBottom="24dp"
         android:paddingTop="50dp"/>
 
@@ -85,7 +85,7 @@
         android:text="Save"
         android:layout_marginTop="70dp"
         android:textColor="@color/white"
-        android:backgroundTint="@color/dark_chocolate"
+        android:backgroundTint="@color/dark_brown"
         android:textSize="25dp"
         android:fontFamily="@font/lato_bold"
         app:cornerRadius="10dp"/>

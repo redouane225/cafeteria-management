@@ -52,6 +52,8 @@
     <string name="unknown_item">"unknown menu item "</string>
     <string name="not_available">"unavailable price format of menu item "</string>
     <string name="unavailable">"unavailable menu item "</string>
+    <string name="add_inventory_product">add_inventory_product</string>
+    <string name="display_the_staff_list">display the staff list</string>
     <string-array name="availability_options">
         <item>Available</item>
         <item>Unavailable</item>

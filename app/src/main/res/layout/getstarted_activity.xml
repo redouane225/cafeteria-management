@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_chocolate"
+    android:background="@color/dark_brown"
     tools:context=".UI.activities.GetStartedActivity">
 
 
@@ -42,7 +42,7 @@
         android:backgroundTint="@color/white"
         android:fontFamily="@font/lato_black"
         android:text="Get Started"
-        android:textColor="@color/dark_chocolate"
+        android:textColor="@color/dark_brown"
         android:textSize="30sp"
         android:textStyle="bold"
         app:cornerRadius="10dp"

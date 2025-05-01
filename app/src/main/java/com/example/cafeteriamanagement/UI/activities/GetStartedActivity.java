@@ -24,7 +24,7 @@ public class GetStartedActivity extends AppCompatActivity {
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_chocolate));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_brown));
 
         WindowInsetsControllerCompat insetsController = new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
         insetsController.hide(WindowInsetsCompat.Type.systemBars()); // Hides status & navigation bars
