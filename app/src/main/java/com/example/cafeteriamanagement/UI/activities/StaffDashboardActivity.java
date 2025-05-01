@@ -54,7 +54,7 @@ public class StaffDashboardActivity extends AppCompatActivity {
             activeFragment = staffMenu;
         }
 
-        binding.bottomnavigationview.setOnItemSelectedListener(item -> {
+        binding.staffBtmnavbar.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.menu) {
                 switchFragment(staffMenu);

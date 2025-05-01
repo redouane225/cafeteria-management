@@ -55,7 +55,7 @@ public class DashboardActivity extends AppCompatActivity {
             activeFragment = menuFragment;
         }
 
-        binding.bottomnavigationview.setOnItemSelectedListener(item -> {
+        binding.adminBtmnavbar.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.dashboard) {
                 switchFragment(menuFragment);

@@ -48,7 +48,7 @@ public class MenuDetailsFragment extends Fragment {
         View view = binding.getRoot();
 
         // Hide BottomNavigationView
-        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomnavigationview);
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.admin_btmnavbar);
         bottomNavigationView.setVisibility(View.GONE);
 
         // Set up Availability Spinner
@@ -108,7 +108,7 @@ public class MenuDetailsFragment extends Fragment {
         super.onDestroyView();
 
         // Restore BottomNavigationView visibility
-        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomnavigationview);
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.admin_btmnavbar);
         bottomNavigationView.setVisibility(View.VISIBLE);
 
         binding = null; // Prevent memory leaks

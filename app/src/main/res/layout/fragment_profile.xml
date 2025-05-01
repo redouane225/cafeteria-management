@@ -15,7 +15,7 @@
         <View
             android:id="@+id/top_section"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:background="@drawable/view_profile_rounded_bk"
             android:backgroundTintMode="src_over"
             app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/profile_img"
             android:layout_width="wrap_content"
@@ -60,12 +59,15 @@
         android:layout_marginBottom="12dp"
         android:layout_marginStart="28dp"
         android:layout_marginEnd="28dp"
-        android:paddingStart="8dp"
+        android:paddingStart="12dp"
         android:text="Log out"
         android:textStyle="bold"
         android:textSize="18sp"
+        android:textColor="@color/red"
+        android:textAlignment="viewStart"
         android:background="@drawable/btn_bg"
         android:drawableStart="@drawable/logout"
+        android:drawablePadding="20dp"
         />
 
 </LinearLayout>
