@@ -3,16 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/beige"
+    android:background="@color/dark_brown"
     tools:context=".UI.fragmentsStaff.newOrder">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="welcome to new order page"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold"/>
 
