@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Window window = getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.brown));
-        window.setNavigationBarColor(ContextCompat.getColor(this, R.color.light_beige));
+        window.setNavigationBarColor(ContextCompat.getColor(this, R.color.white));
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -102,7 +102,6 @@ public class MenuFragment extends Fragment {
                 updateFragments(); // Update all fragments with the latest data
                 Log.d("MenuFlow", "Menu items fetched: " + menuItems.size());
             }
-
             @Override
             public void onError(String errorMessage) {
                 Toast.makeText(getContext(), "Failed to fetch menu items: " + errorMessage, Toast.LENGTH_SHORT).show();

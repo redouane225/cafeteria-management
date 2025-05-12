@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_brown"
-    tools:context=".UI.fragmentsStaff.newOrder">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="welcome to new order page"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:textStyle="bold"/>
 
-</FrameLayout>
+</LinearLayout>
+
+

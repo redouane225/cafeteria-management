@@ -36,7 +36,7 @@ public class StaffDashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Window window = getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.brown));
-        window.setNavigationBarColor(ContextCompat.getColor(this, R.color.light_beige));
+        window.setNavigationBarColor(ContextCompat.getColor(this, R.color.white));
 
         // Optional: control icon visibility
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

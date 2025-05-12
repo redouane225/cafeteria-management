@@ -5,6 +5,8 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.example.cafeteriamanagement.model.MenuItem;
+import com.example.cafeteriamanagement.model.Order;
+import com.example.cafeteriamanagement.model.OrderItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -241,5 +243,73 @@ public class ApiService {
         } catch (JSONException e) {
             Log.e(TAG, "Failed to create JSON body", e);
             runOnUiThread(() -> callback.onError("Failed to create request body"));        }
+    }
+
+
+    public static void getOrders(ApiCallback<List<Order>> callback) {
+        OkHttpClient client = ApiClient.getClient(); // Get the OkHttpClient from ApiClient
+
+        Request request = new Request.Builder()
+                .url(ApiEndpoint.GET_ORDERS) // Replace with your endpoint constant
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "Failed to fetch orders", e);
+                runOnUiThread(() -> callback.onError(e.getMessage())); // Notify error on UI thread
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        String responseBody = response.body().string();
+                        JSONObject responseObject = new JSONObject(responseBody); // Parse the response as a JSON object
+
+                        // Extract the "data" array from the response object
+                        if (responseObject.has("data")) {
+                            JSONArray ordersArray = responseObject.getJSONArray("data");
+                            List<Order> ordersList = new ArrayList<>();
+
+                            Log.d(TAG, responseBody);
+
+                            // Parse JSON array into Java objects
+                            for (int i = 0; i < ordersArray.length(); i++) {
+                                JSONObject orderJson = ordersArray.getJSONObject(i);
+                                int orderId = orderJson.getInt("id");
+                                int tableNumber = orderJson.getInt("table_nbr");
+                                String specialRequest = orderJson.optString("special_request", null);
+
+                                // Parse order items
+                                JSONArray itemsArray = orderJson.getJSONArray("items");
+                                List<OrderItem> items = new ArrayList<>();
+                                for (int j = 0; j < itemsArray.length(); j++) {
+                                    JSONObject itemJson = itemsArray.getJSONObject(j);
+                                    String itemName = itemJson.getString("item_name");
+                                    int quantity = itemJson.getInt("quantity");
+                                    items.add(new OrderItem(itemName, quantity));
+                                }
+
+                                // Create Order object
+                                Order order = new Order(orderId, tableNumber, specialRequest, items);
+                                ordersList.add(order);
+                            }
+
+                            runOnUiThread(() -> callback.onSuccess(ordersList)); // Notify success on UI thread
+                        } else {
+                            runOnUiThread(() -> callback.onError("Response does not contain 'data' field"));
+                        }
+
+                    } catch (JSONException e) {
+                        Log.e(TAG, "JSON parsing error", e);
+                        runOnUiThread(() -> callback.onError("Failed to parse response"));
+                    }
+                } else {
+                    runOnUiThread(() -> callback.onError("Failed to fetch orders: " + response.message()));
+                }
+            }
+        });
     }
 }
