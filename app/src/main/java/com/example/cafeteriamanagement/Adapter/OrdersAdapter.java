@@ -35,7 +35,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
         StringBuilder itemsSummary = new StringBuilder();
         for (OrderItem item : order.getItems()) {
-            itemsSummary.append(item.getQuantity()).append("x ").append(item.getItemName()).append("\n");
+            itemsSummary.append(item.getQuantity()).append("x ").append(item.getItemName()).append("\n ");
         }
         if (itemsSummary.length() > 0) {
             itemsSummary.setLength(itemsSummary.length() - 2); // Remove the trailing comma
