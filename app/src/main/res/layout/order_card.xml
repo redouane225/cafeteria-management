@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="Table 05"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView

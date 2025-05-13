@@ -55,7 +55,7 @@
                 android:fontFamily="@font/lato_bold"
                 android:text="name"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_marginTop="12dp"/>
 
             <EditText
@@ -64,7 +64,8 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/editext_background"
+                android:background="@drawable/edtxt_bg"
+                android:textColor="@color/black"
                 android:hint="item name"
                 android:inputType="text"
                 android:padding="12dp"
@@ -77,7 +78,7 @@
                 android:fontFamily="@font/lato_bold"
                 android:text="price"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/editemprice"
@@ -86,7 +87,8 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/editext_background"
+                android:background="@drawable/edtxt_bg"
+                android:textColor="@color/black"
                 android:hint="item price (USD)"
                 android:inputType="numberDecimal"
                 android:padding="12dp"
@@ -99,7 +101,7 @@
                 android:fontFamily="@font/lato_bold"
                 android:text="availability"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
 
             <Spinner
@@ -118,7 +120,7 @@
                 android:fontFamily="@font/lato_bold"
                 android:text="category"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <Spinner
                 android:id="@+id/menu_category"
@@ -132,15 +134,15 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="54dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginHorizontal="12dp"
                 android:backgroundTint="@color/dark_brown"
                 android:fontFamily="@font/lato_bold"
                 android:text="Save"
                 android:textColor="@color/white"
-                android:textSize="25sp"
-                app:cornerRadius="10dp" />
+                android:textSize="20sp"
+                app:cornerRadius="15dp" />
 
         </LinearLayout>
     </ScrollView>

@@ -71,19 +71,20 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="Username"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <!-- Input Field -->
             <EditText
                 android:id="@+id/editTextUsername"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="50dp"
                 android:hint="Enter your username"
                 android:inputType="text"
                 android:textSize="16sp"
+                android:textColor="@color/black"
                 android:padding="12dp"
-                android:background="@drawable/editext_background"
+                android:background="@drawable/edtxt_bg"
                 android:layout_marginTop="8dp" />
         </LinearLayout>
 
@@ -114,19 +115,20 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="Password"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <!-- Input Field -->
             <EditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="50dp"
                 android:hint="Enter your password"
                 android:inputType="textPassword"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:padding="12dp"
-                android:background="@drawable/editext_background"
+                android:background="@drawable/edtxt_bg"
                 android:layout_marginTop="8dp" />
         </LinearLayout>
 
@@ -140,7 +142,7 @@
             android:layout_marginBottom="20dp"
             android:textColor="@color/white"
             android:backgroundTint="@color/dark_brown"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:fontFamily="@font/lato_bold"
             app:cornerRadius="10dp" />
 
