@@ -114,15 +114,27 @@
                 app:boxCornerRadiusTopEnd="15dp"
                 app:boxCornerRadiusBottomStart="15dp"
                 app:boxCornerRadiusBottomEnd="15dp">
-                <Spinner
-                    android:id="@+id/menu_availability"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/spinner_outline"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:entries="@array/availability_options"
-                    android:padding="8dp"/>
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:id="@+id/menu_availability"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/spinner_outline"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:entries="@array/availability_options"
+                        android:padding="8dp"/>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_down_triangle"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="6dp"/>
+                </FrameLayout>
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -143,15 +155,30 @@
                 app:boxCornerRadiusTopEnd="15dp"
                 app:boxCornerRadiusBottomStart="15dp"
                 app:boxCornerRadiusBottomEnd="15dp">
-                <Spinner
-                    android:id="@+id/menu_category"
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/spinner_outline"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:entries="@array/menu_categories"
-                    android:padding="8dp"/>
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:id="@+id/menu_category"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/spinner_outline"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:entries="@array/menu_categories"
+                        android:padding="8dp"/>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_down_triangle"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="6dp"/>
+                </FrameLayout>
+
             </com.google.android.material.textfield.TextInputLayout>
 
 
