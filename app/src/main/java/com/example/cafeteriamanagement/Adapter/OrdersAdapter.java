@@ -20,6 +20,17 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     public OrdersAdapter(List<Order> orders) {
         this.orders = orders;
     }
+    public Order deleteOrder(int position) {
+        Order removedOrder = orders.get(position);
+        orders.remove(position);
+        notifyItemRemoved(position);
+        return removedOrder;
+    }
+    // Method to restore an order
+    public void restoreOrder(Order order, int position) {
+        orders.add(position, order);
+        notifyItemInserted(position);
+    }
 
     @NonNull
     @Override

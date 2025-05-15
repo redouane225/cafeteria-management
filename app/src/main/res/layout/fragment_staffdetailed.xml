@@ -39,7 +39,7 @@
         android:inputType="text"
         android:textSize="18sp"
         android:padding="12dp"
-        android:background="@drawable/editext_background"
+        android:background="@drawable/edtxt_bg"
         android:layout_marginTop="12dp" />
 
     <TextView
@@ -59,7 +59,7 @@
         android:inputType="text"
         android:textSize="18sp"
         android:padding="12dp"
-        android:background="@drawable/editext_background"
+        android:background="@drawable/edtxt_bg"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="20dp"/>
     <TextView

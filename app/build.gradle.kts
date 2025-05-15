@@ -47,6 +47,8 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     implementation(libs.cardview)
     implementation(libs.recyclerview)
+    implementation(libs.swiperefreshlayout)
+    implementation(libs.recyclerview.swipedecorator)
     implementation(libs.glide)
     implementation(libs.okhttp)
     annotationProcessor(libs.glide.compiler)

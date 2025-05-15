@@ -144,7 +144,7 @@
             android:backgroundTint="@color/dark_brown"
             android:textSize="20sp"
             android:fontFamily="@font/lato_bold"
-            app:cornerRadius="10dp" />
+            app:cornerRadius="15dp" />
 
     </LinearLayout>
 </ScrollView>

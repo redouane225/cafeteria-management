@@ -1,121 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:fitsSystemWindows="true">
 
-    <LinearLayout
-        android:id="@+id/orderFormContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="22dp">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="22dp"
-            android:layout_marginBottom="38dp"
-            android:fontFamily="@font/lato_bold"
-            android:text="New Order"
-            android:textColor="@color/dark_brown"
-            android:textSize="45sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="table number"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:layout_marginTop="24dp" />
-
-        <!-- Table Selector -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Select Table Number"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <Spinner
-                android:id="@+id/spinnerTable"
-                android:layout_width="match_parent"
-                android:layout_height="50dp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Special request"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:layout_marginTop="24dp" />
-
-        <!-- Special Request -->
-        <EditText
-            android:id="@+id/etSpecialRequest"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Special Request"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/edtxt_bg"
-            android:inputType="textMultiLine"
-            android:textColor="@color/black"
-            android:lines="2"
-            android:maxLines="2"
-            android:padding="12dp" />
-
-
-        <!-- Items Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Order Items"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:layout_marginTop="12dp" />
+    <!-- Scrollable Content -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnSubmitOrder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp">
 
         <LinearLayout
-            android:id="@+id/itemsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp" />
+            android:orientation="vertical">
+            <!-- Order Form Contents -->
+            <LinearLayout
+                android:id="@+id/orderFormContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="22dp">
 
-        <!-- Add Item Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddItem"
-            android:layout_width="wrap_content"
-            android:layout_height="52dp"
-            android:text="+ Add Item"
-            android:textSize="20sp"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="@color/brown"
-            app:cornerRadius="15dp"/>
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginBottom="38dp"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="New Order"
+                    android:textColor="@color/dark_brown"
+                    android:textSize="45sp"
+                    android:textStyle="bold" />
 
-        <!-- Submit Order -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSubmitOrder"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_marginHorizontal="12dp"
-            android:text="Submit Order"
-            android:textSize="20sp"
-            android:layout_marginTop="32dp"
-            android:backgroundTint="@color/dark_brown"
-            android:textColor="@android:color/white"
-            app:cornerRadius="10dp"
-            />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Table Number"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="24dp" />
 
-    </LinearLayout>
-</ScrollView>
+                <!-- Table Selector -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Select Table Number"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxStrokeColor="#002147"
+                    app:boxStrokeWidth="2dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusBottomEnd="15dp">
+
+                    <Spinner
+                        android:id="@+id/spinnerTable"
+                        android:layout_width="match_parent"
+                        android:background="@drawable/spinner_outline"
+                        android:layout_height="50dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Special Request"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="24dp" />
+
+                <!-- Special Request -->
+                <EditText
+                    android:id="@+id/etSpecialRequest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Special Request"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/edtxt_bg"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/black"
+                    android:lines="2"
+                    android:maxLines="2"
+                    android:padding="12dp" />
+
+                <!-- Items Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Order Items"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="12dp" />
+
+                <LinearLayout
+                    android:id="@+id/itemsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Add Item Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="52dp"
+                    android:text="+ Add Item"
+                    android:textSize="20sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="@color/blue"
+                    app:cornerRadius="15dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Submit Order Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSubmitOrder"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:text="Submit Order"
+        android:textSize="20sp"
+        android:backgroundTint="@color/dark_brown"
+        android:textColor="@android:color/white"
+        app:cornerRadius="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="90dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

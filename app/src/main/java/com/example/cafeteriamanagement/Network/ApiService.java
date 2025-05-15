@@ -1,12 +1,16 @@
 package com.example.cafeteriamanagement.Network;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.cafeteriamanagement.model.MenuItem;
 import com.example.cafeteriamanagement.model.Order;
 import com.example.cafeteriamanagement.model.OrderItem;
+import com.example.cafeteriamanagement.model.Table;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +22,7 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -94,14 +99,12 @@ public class ApiService {
                 .url(ApiEndpoint.GET_MENU_ITEMS)
                 .get()
                 .build();
-
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "Failed to fetch menu items", e);
                 runOnUiThread(() -> callback.onError(e.getMessage()));
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
@@ -111,7 +114,6 @@ public class ApiService {
                         JSONObject menuObject = new JSONObject(responseBody);
                         JSONArray menuItemsArray = menuObject.getJSONArray("data");
                         List<MenuItem> menuItems = new ArrayList<>();
-
                         Log.d(TAG, responseBody);
                         // Parse JSON array into Java objects
                         for (int i = 0; i < menuItemsArray.length(); i++) {
@@ -308,6 +310,131 @@ public class ApiService {
                     }
                 } else {
                     runOnUiThread(() -> callback.onError("Failed to fetch orders: " + response.message()));
+                }
+            }
+        });
+    }
+    public static void getTables(ApiCallback<List<Table>> callback) {
+        OkHttpClient client = ApiClient.getClient();
+        Request request = new Request.Builder()
+                .url(ApiEndpoint.GET_TABLES) // Replace with your endpoint constant
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onError("Failed to connect to server");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    callback.onError("Server returned an error");
+                    return;
+                }
+
+                try {
+                    String json = response.body().string();
+                    JSONObject jsonObject = new JSONObject(json);
+
+                    if (jsonObject.getString("status").equals("success")) {
+                        JSONArray data = jsonObject.getJSONArray("data");
+                        List<Table> tables = new ArrayList<>();
+
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject obj = data.getJSONObject(i);
+                            int id = obj.getInt("id");
+                            int number = obj.getInt("number");
+                            tables.add(new Table(id, number));
+                        }
+                        callback.onSuccess(tables);
+                    } else {
+                        callback.onError(jsonObject.getString("message"));
+                    }
+                } catch (JSONException e) {
+                    callback.onError("Parsing error: " + e.getMessage());
+                }
+            }
+        });
+    }
+    public static void addNewOrder(JSONObject orderJson, ApiCallback<String> callback) {
+        OkHttpClient client = ApiClient.getClient();
+
+
+        RequestBody body = RequestBody.create(
+                orderJson.toString(), // Convert JSONObject to string
+                MediaType.parse("application/json") // Set content type to JSON
+        );
+
+        // Build the POST request
+        Request request = new Request.Builder()
+                .url(ApiEndpoint.ADD_NEW_ORDER)
+                .post(body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onError("Failed to connect to server: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    callback.onError("Server returned an error: " + response.code());
+                    return;
+                }
+
+                try {
+                    // Parse the JSON response
+                    String json = response.body().string();
+                    JSONObject jsonObject = new JSONObject(json);
+
+                    if (jsonObject.getString("status").equals("success")) {
+                        callback.onSuccess(jsonObject.getString("message"));
+                    } else {
+                        callback.onError(jsonObject.getString("message"));
+                    }
+                } catch (JSONException e) {
+                    callback.onError("Parsing error: " + e.getMessage());
+                }
+            }
+        });
+    }
+    // Delete Order API Call
+
+    public static void deleteOrder(int orderId, ApiCallback<String> callback) {
+
+
+        // Build the request body
+        RequestBody body = new FormBody.Builder()
+                .add("order_id", Integer.toString(orderId)) // Pass the int directly as-is
+                .build();
+
+        // Build the DELETE request
+        Request request = new Request.Builder()
+                .url(ApiEndpoint.DELETE_ORDER)
+                .delete(body) // Attach the body to the DELETE request
+                .build();
+
+        // Send the request
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                callback.onError(e.getMessage()); // Handle failure
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    callback.onSuccess("Order deleted successfully"); // Handle success
+                } else {
+                    callback.onError("Failed to delete order: " + response.message()); // Handle error response
                 }
             }
         });

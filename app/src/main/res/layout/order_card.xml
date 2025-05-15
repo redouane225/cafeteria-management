@@ -49,9 +49,8 @@
                 android:text="3 cappuccino\n1 mojito\n2 croissant"
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
+
         </LinearLayout>
-
-
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
