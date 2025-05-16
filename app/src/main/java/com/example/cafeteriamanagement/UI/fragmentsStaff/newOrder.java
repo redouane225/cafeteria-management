@@ -75,8 +75,8 @@ public class newOrder extends Fragment {
             @Override
             public void onError(String errorMessage) {
                 getActivity().runOnUiThread(() -> {
-                Toast.makeText(requireContext(), "Failed to load tables", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Table fetch error: " + errorMessage);
+                    Toast.makeText(requireContext(), "Failed to load tables", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Table fetch error: " + errorMessage);
                 });
             }
         });
@@ -95,8 +95,9 @@ public class newOrder extends Fragment {
             @Override
             public void onError(String errorMessage) {
                 getActivity().runOnUiThread(() -> {
-                Toast.makeText(requireContext(), "Failed to load menu items", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Menu items fetch error: " + errorMessage);});
+                    Toast.makeText(requireContext(), "Failed to load menu items", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Menu items fetch error: " + errorMessage);
+                });
             }
         });
     }
@@ -125,13 +126,13 @@ public class newOrder extends Fragment {
         binding.itemsContainer.addView(itemBinding.getRoot());
     }
 
-
     private void submitOrder() {
         try {
             int selectedPosition = binding.spinnerTable.getSelectedItemPosition();
             if (selectedPosition == 0) {
                 getActivity().runOnUiThread(() -> {
-                    Toast.makeText(requireContext(), "Please select a table", Toast.LENGTH_SHORT).show();});
+                    Toast.makeText(requireContext(), "Please select a table", Toast.LENGTH_SHORT).show();
+                });
                 return;
             }
 
@@ -143,7 +144,8 @@ public class newOrder extends Fragment {
 
             if (itemCount == 0) {
                 getActivity().runOnUiThread(() -> {
-                    Toast.makeText(requireContext(), "Add at least one item", Toast.LENGTH_SHORT).show();});
+                    Toast.makeText(requireContext(), "Add at least one item", Toast.LENGTH_SHORT).show();
+                });
                 return;
             }
 
@@ -157,14 +159,16 @@ public class newOrder extends Fragment {
 
                 if (itemName.isEmpty() || quantityStr.isEmpty()) {
                     getActivity().runOnUiThread(() -> {
-                        Toast.makeText(requireContext(), "name and quantity must be filled", Toast.LENGTH_SHORT).show();});
+                        Toast.makeText(requireContext(), "Name and quantity must be filled", Toast.LENGTH_SHORT).show();
+                    });
                     return;
                 }
 
                 int quantity = Integer.parseInt(quantityStr);
                 if (quantity <= 0) {
                     getActivity().runOnUiThread(() -> {
-                        Toast.makeText(requireContext(), "Quantity must be greater than 0", Toast.LENGTH_SHORT).show();});
+                        Toast.makeText(requireContext(), "Quantity must be greater than 0", Toast.LENGTH_SHORT).show();
+                    });
                     return;
                 }
 
@@ -178,9 +182,9 @@ public class newOrder extends Fragment {
             orderJson.put("table_number", Integer.parseInt(tableNumberStr));
             orderJson.put("special_request", specialRequest.isEmpty() ? "no special request" : specialRequest);
             orderJson.put("items", itemsArray);
+            orderJson.put("status", "in progress"); // Set the status explicitly to "in progress"
 
             Log.d("json format", "Sending order: " + orderJson.toString());
-
 
             binding.btnSubmitOrder.setEnabled(false);
             ApiService.addNewOrder(orderJson, new ApiCallback<String>() {
@@ -205,18 +209,16 @@ public class newOrder extends Fragment {
         } catch (JSONException | NumberFormatException e) {
             e.printStackTrace();
             requireActivity().runOnUiThread(() -> {
-                Toast.makeText(requireContext(), "Error parsing form. Check your inputs.", Toast.LENGTH_SHORT).show();});
+                Toast.makeText(requireContext(), "Error parsing form. Check your inputs.", Toast.LENGTH_SHORT).show();
+            });
         }
     }
 
-
     private void clearForm() {
-
         binding.spinnerTable.setSelection(0);  // resets to "Select a table"
         binding.etSpecialRequest.setText("");
         binding.itemsContainer.removeAllViews();
-
-        }
+    }
 
     @Override
     public void onDestroyView() {

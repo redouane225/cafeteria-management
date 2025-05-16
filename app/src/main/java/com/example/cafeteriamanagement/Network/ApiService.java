@@ -283,6 +283,7 @@ public class ApiService {
                                 int orderId = orderJson.getInt("id");
                                 int tableNumber = orderJson.getInt("table_nbr");
                                 String specialRequest = orderJson.optString("special_request", null);
+                                String status = orderJson.getString("status"); // Get the status field
 
                                 // Parse order items
                                 JSONArray itemsArray = orderJson.getJSONArray("items");
@@ -294,8 +295,8 @@ public class ApiService {
                                     items.add(new OrderItem(itemName, quantity));
                                 }
 
-                                // Create Order object
-                                Order order = new Order(orderId, tableNumber, specialRequest, items);
+                                // Create Order object with status
+                                Order order = new Order(orderId, tableNumber, specialRequest, items, status);
                                 ordersList.add(order);
                             }
 
@@ -362,6 +363,13 @@ public class ApiService {
     public static void addNewOrder(JSONObject orderJson, ApiCallback<String> callback) {
         OkHttpClient client = ApiClient.getClient();
 
+        try {
+            // Add the "status" field to the JSON object
+            orderJson.put("status", "in progress"); // Ensure status is always set to "in progress"
+        } catch (JSONException e) {
+            callback.onError("Failed to add status to order: " + e.getMessage());
+            return;
+        }
 
         RequestBody body = RequestBody.create(
                 orderJson.toString(), // Convert JSONObject to string
@@ -374,7 +382,6 @@ public class ApiService {
                 .post(body)
                 .addHeader("Content-Type", "application/json")
                 .build();
-
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -405,14 +412,14 @@ public class ApiService {
             }
         });
     }
+
+
     // Delete Order API Call
-
     public static void deleteOrder(int orderId, ApiCallback<String> callback) {
-
 
         // Build the request body
         RequestBody body = new FormBody.Builder()
-                .add("order_id", Integer.toString(orderId)) // Pass the int directly as-is
+                .add("order_id", Integer.toString(orderId)) // Pass the int directly as a string
                 .build();
 
         // Build the DELETE request
@@ -426,15 +433,81 @@ public class ApiService {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                callback.onError(e.getMessage()); // Handle failure
+                callback.onError("Failed to connect to server: " + e.getMessage()); // Handle failure
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    callback.onSuccess("Order deleted successfully"); // Handle success
+                    try {
+                        // Parse the JSON response
+                        String json = response.body().string();
+                        JSONObject jsonObject = new JSONObject(json);
+
+                        if (jsonObject.getString("status").equals("success")) {
+                            callback.onSuccess(jsonObject.getString("message"));
+                        } else {
+                            // Handle the "Order is in progress" case or other error messages
+                            callback.onError(jsonObject.getString("message"));
+                        }
+                    } catch (JSONException e) {
+                        callback.onError("Parsing error: " + e.getMessage());
+                    }
                 } else {
-                    callback.onError("Failed to delete order: " + response.message()); // Handle error response
+                    callback.onError( response.message()); // Handle non-200 responses
+                }
+            }
+        });
+    }
+    public static void updateOrderStatus(int orderId, String status, ApiCallback<String> callback) {
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("order_id", orderId);
+            jsonBody.put("status", status);
+        } catch (JSONException e) {
+            callback.onError("Failed to construct JSON body: " + e.getMessage());
+            return;
+        }
+
+        // Create the request
+        RequestBody body = RequestBody.create(
+                jsonBody.toString(),
+                MediaType.get("application/json; charset=utf-8")
+        );
+
+        Request request = new Request.Builder()
+                .url(ApiEndpoint.UPDATE_ORDER_STATUS)
+                .post(body)
+                .build();
+
+        // Send the request using OkHttpClient
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                // Handle failure
+                callback.onError("Failed to connect to server: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                // Handle the server's response
+                if (response.isSuccessful()) {
+                    try {
+                        String responseBody = response.body().string();
+                        JSONObject jsonResponse = new JSONObject(responseBody);
+
+                        if (jsonResponse.getBoolean("success")) {
+                            callback.onSuccess(jsonResponse.getString("message"));
+                        } else {
+                            callback.onError(jsonResponse.getString("error"));
+                        }
+                    } catch (JSONException e) {
+                        callback.onError("Failed to parse server response: " + e.getMessage());
+                    }
+                } else {
+                    callback.onError("Server responded with error: " + response.message());
                 }
             }
         });

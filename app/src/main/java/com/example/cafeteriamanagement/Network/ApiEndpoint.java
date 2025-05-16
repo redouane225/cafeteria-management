@@ -13,6 +13,7 @@ public class ApiEndpoint {
     public static final String GET_TABLES = BASE_URL + "getTables.php";
     public static final String ADD_NEW_ORDER = BASE_URL + "addNewOrder.php";
     public static final String DELETE_ORDER = BASE_URL + "deleteOrder.php";
+    public static final String UPDATE_ORDER_STATUS = BASE_URL+ "updateStatus.php";
 
 
 }

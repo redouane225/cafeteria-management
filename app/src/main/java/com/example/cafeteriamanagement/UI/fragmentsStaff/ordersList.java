@@ -49,7 +49,7 @@ public class ordersList extends Fragment {
         // Initialize RecyclerView and Adapter
         binding.ordersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ordersList = new ArrayList<>();
-        ordersAdapter = new OrdersAdapter(ordersList);
+        ordersAdapter = new OrdersAdapter(requireContext(),ordersList);
         binding.ordersRecyclerView.setAdapter(ordersAdapter);
 
         // Fetch orders from API

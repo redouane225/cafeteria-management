@@ -51,6 +51,26 @@
                 android:textSize="14sp" />
 
         </LinearLayout>
+        <TextView
+            android:id="@+id/StatusChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_gravity="end"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
+
+            android:text="In Progress"
+            android:textColor="@color/amber"
+            android:background="@drawable/status_inprogress"
+            android:textSize="16sp"
+            android:fontFamily="@font/lato_bold"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            android:focusable="true"
+           />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
